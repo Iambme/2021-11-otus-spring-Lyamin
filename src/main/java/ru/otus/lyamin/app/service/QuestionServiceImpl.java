@@ -5,9 +5,11 @@ import ru.otus.lyamin.app.dao.QuestionDao;
 import ru.otus.lyamin.app.entity.Question;
 
 import java.util.List;
+
 @AllArgsConstructor
 public class QuestionServiceImpl implements QuestionService {
-    QuestionDao questionDao;
+   private QuestionDao questionDao;
+
     @Override
     public List<Question> getQuestions() {
         return questionDao.getQuestions();

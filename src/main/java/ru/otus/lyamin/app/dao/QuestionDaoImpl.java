@@ -21,27 +21,26 @@ public class QuestionDaoImpl implements QuestionDao {
     private String[] headers;
 
     @Override
-    public List<Question> getQuestions()  {
+    public List<Question> getQuestions() {
         List<Question> questionList = new ArrayList<>();
         List<Answer> answerList;
 
-        try (Reader in = new FileReader(path)){
+        try (Reader in = new FileReader(path)) {
             Iterable<CSVRecord> records = CSVFormat.DEFAULT
                     .withHeader(headers)
                     .withFirstRecordAsHeader()
                     .parse(in);
             for (CSVRecord record : records) {
                 answerList = new ArrayList<>();
-                answerList.add(new Answer(record.get(headers[0]), false));
                 answerList.add(new Answer(record.get(headers[1]), false));
                 answerList.add(new Answer(record.get(headers[2]), false));
-                answerList.add(new Answer(record.get(headers[3]), true));
+                answerList.add(new Answer(record.get(headers[3]), false));
+                answerList.add(new Answer(record.get(headers[4]), true));
                 Collections.shuffle(answerList);
-                questionList.add(new Question(record.get("question"), answerList));
+                questionList.add(new Question(record.get(headers[0]), answerList));
 
             }
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
