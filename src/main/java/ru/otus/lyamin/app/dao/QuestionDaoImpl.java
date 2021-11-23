@@ -9,8 +9,8 @@ import ru.otus.lyamin.app.entity.Answer;
 import ru.otus.lyamin.app.entity.Question;
 import ru.otus.lyamin.app.exception.QuestionLoadingException;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +27,7 @@ public class QuestionDaoImpl implements QuestionDao {
         List<Question> questionList = new ArrayList<>();
         List<Answer> answerList;
 
-        try (Reader in = new FileReader(questionsResource.getFile())) {
+        try (Reader in = new InputStreamReader((questionsResource.getInputStream()))) {
             Iterable<CSVRecord> records = CSVFormat.DEFAULT
                     .withHeader(headers)
                     .withFirstRecordAsHeader()
