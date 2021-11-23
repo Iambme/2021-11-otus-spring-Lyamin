@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.core.io.Resource;
 import ru.otus.lyamin.app.entity.Answer;
 import ru.otus.lyamin.app.entity.Question;
+import ru.otus.lyamin.app.exception.QuestionLoadingException;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -17,7 +19,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class QuestionDaoImpl implements QuestionDao {
-    private String path;
+    private final Resource questionsResource;
     private String[] headers;
 
     @Override
@@ -25,7 +27,7 @@ public class QuestionDaoImpl implements QuestionDao {
         List<Question> questionList = new ArrayList<>();
         List<Answer> answerList;
 
-        try (Reader in = new FileReader(path)) {
+        try (Reader in = new FileReader(questionsResource.getFile())) {
             Iterable<CSVRecord> records = CSVFormat.DEFAULT
                     .withHeader(headers)
                     .withFirstRecordAsHeader()
@@ -41,7 +43,7 @@ public class QuestionDaoImpl implements QuestionDao {
 
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new QuestionLoadingException("Error while loading questions",e);
         }
 
         return questionList;

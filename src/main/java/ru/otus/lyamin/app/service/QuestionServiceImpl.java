@@ -8,7 +8,7 @@ import java.util.List;
 
 @AllArgsConstructor
 public class QuestionServiceImpl implements QuestionService {
-   private QuestionDao questionDao;
+   private final QuestionDao questionDao;
 
     @Override
     public List<Question> getQuestions() {
