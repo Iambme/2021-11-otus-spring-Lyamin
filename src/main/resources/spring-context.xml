@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="questionDao" class="ru.otus.lyamin.app.dao.QuestionDaoImpl">
+        <constructor-arg name="questionsResource" value="classpath:questions.csv"/>
+        <constructor-arg name="headers">
+            <array value-type="java.lang.String">
+                <value>question</value>
+                <value>answer1</value>
+                <value>answer2</value>
+                <value>answer3</value>
+                <value>correctAnswer</value>
+            </array>
+        </constructor-arg>
+    </bean>
+
+    <bean id="questionService" class="ru.otus.lyamin.app.service.QuestionServiceImpl">
+        <constructor-arg name="questionDao" ref="questionDao"/>
+    </bean>
+    <bean id="presentationService" class="ru.otus.lyamin.app.service.PresentationServiceImpl">
+        <constructor-arg name="questionService" ref="questionService"/>
+    </bean>
+
+</beans>
