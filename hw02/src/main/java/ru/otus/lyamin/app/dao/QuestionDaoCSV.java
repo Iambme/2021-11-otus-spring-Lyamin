@@ -1,7 +1,5 @@
 package ru.otus.lyamin.app.dao;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,13 +16,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@Data
-@Component
-public class QuestionDaoImpl implements QuestionDao {
-    private final Resource questions;
-    private String[] headers;
 
-    public QuestionDaoImpl(@Value("${questions}") Resource questions, @Value("${headers}") String[] headers) {
+@Component
+public class QuestionDaoCSV implements QuestionDao {
+    private final Resource questions;
+    private final String[] headers;
+
+    public QuestionDaoCSV(@Value("${questions}") Resource questions, @Value("${headers}") String[] headers) {
         this.questions = questions;
         this.headers = headers;
     }

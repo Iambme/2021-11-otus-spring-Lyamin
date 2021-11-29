@@ -10,14 +10,14 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class QuestionDaoImplExam {
-private  QuestionDaoImpl questionDao ;
+class QuestionDaoCSVExam {
+private QuestionDaoCSV questionDao ;
 
     @BeforeEach
     void setUp() {
         Resource path = new ClassPathResource("csv/questions.csv");
         String[] headers = new String[]{"question", "answer1", "answer2", "answer3", "correctAnswer"};
-        questionDao = new QuestionDaoImpl(path, headers);
+        questionDao = new QuestionDaoCSV(path, headers);
     }
 
     @Test

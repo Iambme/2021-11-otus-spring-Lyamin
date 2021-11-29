@@ -37,7 +37,7 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.8.1</version>
-            <scope>test</scope>
+            <scope>exam</scope>
         </dependency>
 
 
@@ -46,7 +46,7 @@
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>3.21.0</version>
-            <scope>test</scope>
+            <scope>exam</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
@@ -54,7 +54,7 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>4.1.0</version>
-            <scope>test</scope>
+            <scope>exam</scope>
         </dependency>
 
     </dependencies>

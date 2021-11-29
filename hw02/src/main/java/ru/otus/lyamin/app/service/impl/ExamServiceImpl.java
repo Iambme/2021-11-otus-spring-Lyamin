@@ -27,8 +27,7 @@ public class ExamServiceImpl implements ExamService {
         this.successScore = successScore;
     }
 
-    @Override
-    public Exam buildExam() {
+    private Exam buildExam() {
         User user = userService.getUser();
         List<Question> questionList = questionService.getQuestions();
         return Exam.builder()
@@ -42,7 +41,7 @@ public class ExamServiceImpl implements ExamService {
     public void startExam() {
         Exam exam = buildExam();
         exam.getQuestionList().forEach(question -> {
-            boolean answerResult = checkAnswer(question);
+            boolean answerResult = askQuestion(question);
             if (answerResult) {
                 exam.incrementCorrectAnswers();
             }
@@ -57,7 +56,7 @@ public class ExamServiceImpl implements ExamService {
         }
     }
 
-    private boolean checkAnswer(Question question) {
+    private boolean askQuestion(Question question) {
         writeQuestion(question.getQuestionText());
         List<Answer> answers = question.getAnswerList();
         for (Answer value : answers) {
