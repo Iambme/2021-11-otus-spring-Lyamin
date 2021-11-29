@@ -1,6 +1,5 @@
 package ru.otus.lyamin.app.service.impl;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.otus.lyamin.app.service.interf.ReadWriteService;
@@ -8,6 +7,7 @@ import ru.otus.lyamin.app.service.interf.ReadWriteService;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.util.Formatter;
 import java.util.Scanner;
 
 @Service
@@ -35,5 +35,11 @@ public class ReadWriteServiceImpl implements ReadWriteService {
     @Override
     public int readInt() {
         return in.nextInt();
+    }
+
+    public void writeString(String out, Object ... args){
+        Formatter f = new Formatter();
+        f.format(out,args);
+        this.out.println(f);
     }
 }

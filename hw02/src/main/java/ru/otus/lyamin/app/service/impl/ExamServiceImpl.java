@@ -2,10 +2,7 @@ package ru.otus.lyamin.app.service.impl;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.otus.lyamin.app.entity.Answer;
-import ru.otus.lyamin.app.entity.Exam;
-import ru.otus.lyamin.app.entity.Question;
-import ru.otus.lyamin.app.entity.User;
+import ru.otus.lyamin.app.entity.*;
 import ru.otus.lyamin.app.service.interf.QuestionService;
 import ru.otus.lyamin.app.service.interf.ReadWriteService;
 import ru.otus.lyamin.app.service.interf.ExamService;
@@ -32,6 +29,7 @@ public class ExamServiceImpl implements ExamService {
         List<Question> questionList = questionService.getQuestions();
         return Exam.builder()
                 .user(user)
+                .examResult(new ExamResult())
                 .questionList(questionList)
                 .successScore(successScore)
                 .build();
@@ -43,7 +41,7 @@ public class ExamServiceImpl implements ExamService {
         exam.getQuestionList().forEach(question -> {
             boolean answerResult = askQuestion(question);
             if (answerResult) {
-                exam.incrementCorrectAnswers();
+                exam.getExamResult().incrementCorrectAnswers();
             }
         });
         checkPassed(exam);
@@ -51,8 +49,8 @@ public class ExamServiceImpl implements ExamService {
     }
 
     private void checkPassed(Exam exam) {
-        if (exam.getCorrectAnswers() > successScore) {
-            exam.setPassed(true);
+        if (exam.getExamResult().getCorrectAnswers() > successScore) {
+            exam.getExamResult().setPassed(true);
         }
     }
 
@@ -77,9 +75,9 @@ public class ExamServiceImpl implements ExamService {
 
     private void printResult(Exam exam) {
 
-        readWriteService.writeString(String.format("Exam result for %s %s: %s, correct answers - %d, success score - %d.",
-                exam.getUser().getSurname(), exam.getUser().getName(), exam.isPassed()
-                        ? "pass" : "not pass", exam.getCorrectAnswers(), successScore));
+        readWriteService.writeString("Exam result for %s %s: %s, correct answers - %d, success score - %d.",
+                exam.getUser().getSurname(), exam.getUser().getName(), exam.getExamResult().isPassed()
+                        ? "pass" : "not pass", exam.getExamResult().getCorrectAnswers(), successScore);
     }
 
     private int readAnswer() {

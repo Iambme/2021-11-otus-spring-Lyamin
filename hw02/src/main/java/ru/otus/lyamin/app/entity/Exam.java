@@ -11,12 +11,7 @@ import java.util.List;
 public class Exam {
     private final User user;
     private final List<Question> questionList;
-    private boolean isPassed;
     private final int successScore;
-    private int correctAnswers;
-
-    public void incrementCorrectAnswers(){
-        correctAnswers++;
-    }
+    ExamResult examResult;
 
 }

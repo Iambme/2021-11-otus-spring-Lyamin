@@ -2,7 +2,7 @@ package ru.otus.lyamin.app.prototype;
 
 import lombok.experimental.UtilityClass;
 import ru.otus.lyamin.app.entity.Exam;
-import ru.otus.lyamin.app.entity.User;
+import ru.otus.lyamin.app.entity.ExamResult;
 
 import java.util.List;
 
@@ -14,20 +14,24 @@ public class ExamPrototype {
     public static Exam getPassedExam(){
         return Exam.builder()
                 .user(getTestUser())
+                .examResult(ExamResult.builder()
+                        .isPassed(true)
+                        .correctAnswers(1)
+                        .build())
                 .questionList(List.of(getQuestion(),getQuestion()))
                 .successScore(1)
-                .correctAnswers(1)
-                .isPassed(true)
                 .build();
 
     }
     public static Exam getNotPassedExam(){
         return Exam.builder()
-                .user(new User("test","test"))
+                .user(getTestUser())
+                .examResult(ExamResult.builder()
+                        .isPassed(false)
+                        .correctAnswers(0)
+                        .build())
                 .questionList(List.of(getQuestion(),getQuestion()))
                 .successScore(1)
-                .correctAnswers(0)
-                .isPassed(false)
                 .build();
 
     }
