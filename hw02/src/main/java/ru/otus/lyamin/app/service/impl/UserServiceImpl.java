@@ -10,13 +10,10 @@ import ru.otus.lyamin.app.service.interf.ReadWriteService;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private final ReadWriteService readWriteService;
-    
+
     @Override
     public User getUser() {
-        return User.builder()
-                .name(readName())
-                .surname(readSurname())
-                .build();
+        return new User(readName(), readSurname());
     }
 
     private String readSurname() {

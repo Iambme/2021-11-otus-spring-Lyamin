@@ -5,10 +5,7 @@ import ru.otus.lyamin.app.entity.User;
 
 @UtilityClass
 public class UserPrototype {
-    public static User getTestUser(){
-        return User.builder()
-                .name("test")
-                .surname("test")
-                .build();
+    public static User getTestUser() {
+        return new User("test", "test");
     }
 }
