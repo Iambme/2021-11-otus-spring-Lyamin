@@ -3,6 +3,7 @@ package ru.otus.lyamin.app.prototype;
 import lombok.experimental.UtilityClass;
 import ru.otus.lyamin.app.entity.Exam;
 import ru.otus.lyamin.app.entity.ExamResult;
+import ru.otus.lyamin.app.entity.Question;
 
 import java.util.List;
 
@@ -11,27 +12,24 @@ import static ru.otus.lyamin.app.prototype.UserPrototype.getTestUser;
 
 @UtilityClass
 public class ExamPrototype {
-    public static Exam getPassedExam(){
-        return Exam.builder()
-                .user(getTestUser())
-                .examResult(ExamResult.builder()
-                        .isPassed(true)
-                        .correctAnswers(1)
-                        .build())
-                .questionList(List.of(getQuestion(),getQuestion()))
-                .successScore(1)
-                .build();
+    private final List<Question> questionList = List.of(getQuestion(), getQuestion());
 
-    }
-    public static Exam getNotPassedExam(){
-        return Exam.builder()
+    public static ExamResult getPassedExamResult() {
+
+        return ExamResult.builder()
                 .user(getTestUser())
-                .examResult(ExamResult.builder()
-                        .isPassed(false)
-                        .correctAnswers(0)
-                        .build())
-                .questionList(List.of(getQuestion(),getQuestion()))
-                .successScore(1)
+                .isPassed(true)
+                .correctAnswers(1)
+                .exam(new Exam(questionList, 1))
+                .build();
+    }
+
+    public static ExamResult getNotPassedExamResult() {
+        return ExamResult.builder()
+                .user(getTestUser())
+                .isPassed(false)
+                .correctAnswers(1)
+                .exam(new Exam(questionList, 1))
                 .build();
 
     }

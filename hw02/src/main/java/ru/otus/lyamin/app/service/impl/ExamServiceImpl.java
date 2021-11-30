@@ -24,33 +24,25 @@ public class ExamServiceImpl implements ExamService {
         this.successScore = successScore;
     }
 
-    private Exam buildExam() {
-        User user = userService.getUser();
-        List<Question> questionList = questionService.getQuestions();
-        return Exam.builder()
-                .user(user)
-                .examResult(new ExamResult())
-                .questionList(questionList)
-                .successScore(successScore)
-                .build();
-    }
-
     @Override
     public void startExam() {
-        Exam exam = buildExam();
-        exam.getQuestionList().forEach(question -> {
-            boolean answerResult = askQuestion(question);
-            if (answerResult) {
-                exam.getExamResult().incrementCorrectAnswers();
-            }
+        ExamResult examResult = new ExamResult();
+        Exam exam = new Exam(questionService.getQuestions(), successScore);
+
+        examResult.setUser(userService.getUser());
+        examResult.setExam(exam);
+
+        examResult.getExam().getQuestionList().forEach(question -> {
+            boolean isCorrectAnswerResult = askQuestion(question);
+            examResult.applyAnswer(isCorrectAnswerResult);
         });
-        checkPassed(exam);
-        printResult(exam);
+        checkPassed(examResult);
+        printResult(examResult);
     }
 
-    private void checkPassed(Exam exam) {
-        if (exam.getExamResult().getCorrectAnswers() > successScore) {
-            exam.getExamResult().setPassed(true);
+    private void checkPassed(ExamResult examResult) {
+        if (examResult.getCorrectAnswers() >= successScore) {
+            examResult.setPassed(true);
         }
     }
 
@@ -73,11 +65,11 @@ public class ExamServiceImpl implements ExamService {
         readWriteService.writeString(question);
     }
 
-    private void printResult(Exam exam) {
+    private void printResult(ExamResult examResult) {
 
         readWriteService.writeString("Exam result for %s %s: %s, correct answers - %d, success score - %d.",
-                exam.getUser().getSurname(), exam.getUser().getName(), exam.getExamResult().isPassed()
-                        ? "pass" : "not pass", exam.getExamResult().getCorrectAnswers(), successScore);
+                examResult.getUser().getSurname(), examResult.getUser().getName(), examResult.isPassed()
+                        ? "pass" : "not pass", examResult.getCorrectAnswers(), successScore);
     }
 
     private int readAnswer() {
