@@ -1,0 +1,6 @@
+question,answer1,answer2,answer3,correctAnswer
+The device for inputting information from a sheet of paper is called:,plotter,streamer,driver,scanner
+In Unicode two bytes are allocated for each character. Determine the information volume of a word of twenty-four characters in this encoding.,48 bit,192 bit,256 bit,384 bit
+What PC device is intended for information output?,processor,keyboard,tape recorder,monitor,
+When encoding text information (in Unicode codes) the binary code of each character occupies in the memory of a personal computer:,1 byte,1 Kb,2 bits,2 bytes
+The minimum unit for measuring the amount of information is taken:,1 baud,256 bytes,1 byte,1 bit
