@@ -1,0 +1,17 @@
+exam:
+  questions: csv/questions.csv
+  success-score: 3
+  language-tag: en-US
+  headers:
+    question,
+    answer1,
+    answer2,
+    answer3,
+    correctAnswer
+
+spring:
+  output:
+    ansi:
+      enabled: always
+  messages:
+    basename: i18n/messages
