@@ -1,13 +1,9 @@
 exam:
-  questions: csv/questions.csv
   success-score: 3
-  language-tag: en-US
-  headers:
-    question,
-    answer1,
-    answer2,
-    answer3,
-    correctAnswer
+
+locale:
+#  i18n: en-US
+  i18n: ru-RU
 
 spring:
   output:

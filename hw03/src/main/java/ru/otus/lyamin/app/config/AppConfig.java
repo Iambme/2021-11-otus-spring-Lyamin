@@ -1,18 +1,27 @@
 package ru.otus.lyamin.app.config;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.Resource;
 
 @Configuration
 @EnableConfigurationProperties
 @ConfigurationProperties(prefix = "exam")
 @Data
 public class AppConfig {
-    private Resource questions;
-    private String[] headers;
+    private final LocaleConfig localeConfig;
     private int successScore;
-    private String languageTag;
+
+    @Autowired
+    public AppConfig(LocaleConfig localeConfig) {
+        this.localeConfig = localeConfig;
+    }
+
+    @Bean("appLocale")
+    public String appLocale() {
+        return this.localeConfig.getI18n();
+    }
 }

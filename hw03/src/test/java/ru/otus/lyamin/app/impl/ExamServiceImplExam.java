@@ -20,25 +20,25 @@ class ExamServiceImplExam {
     private final ReadWriteService readWriteService = mock(ReadWriteServiceImpl.class);
     private final UserService userService = mock(UserServiceImpl.class);
     private final AppConfig appConfig = mock(AppConfig.class);
-    LocalizationService localizationService = mock(LocalizationService.class);
-    private  ExamService examService;
+    private final WriteWithLocalizationService writeWithLocalizationService = mock(WriteWithLocalizationService.class);
+    private ExamService examService;
 
 
     @BeforeEach
     void setUp() {
         appConfig.setSuccessScore(1);
-        examService = new ExamServiceImpl(questionService,readWriteService,userService, appConfig,localizationService);
+        examService = new ExamServiceImpl(questionService, readWriteService, userService, appConfig, writeWithLocalizationService);
     }
 
     @Test
     void startExam() {
         when(readWriteService.readInt()).thenReturn(1);
         when(userService.getUser()).thenReturn(getTestUser());
-        when(questionService.getQuestions()).thenReturn(List.of(getQuestion(),getQuestion()));
+        when(questionService.getQuestions()).thenReturn(List.of(getQuestion(), getQuestion()));
         examService.startExam();
-        verify(readWriteService,atLeastOnce()).writeString(any());
-        verify(readWriteService,times(3)).readInt();
-        verify(readWriteService,never()).readString();
+        verify(readWriteService, atLeastOnce()).writeString(any());
+        verify(readWriteService, times(2)).readInt();
+        verify(readWriteService, never()).readString();
 
     }
 }

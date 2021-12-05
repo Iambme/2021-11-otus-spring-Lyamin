@@ -16,14 +16,14 @@ public class ExamServiceImpl implements ExamService {
     private final ReadWriteService readWriteService;
     private final UserService userService;
     private final AppConfig appConfig;
-    private final LocalizationService localizationService;
+    private final WriteWithLocalizationService writeWithLocalizationService;
 
-    public ExamServiceImpl(QuestionService questionService, ReadWriteService readWriteService, UserService userService, AppConfig appConfig, LocalizationService localizationService) {
+    public ExamServiceImpl(QuestionService questionService, ReadWriteService readWriteService, UserService userService, AppConfig appConfig, WriteWithLocalizationService writeWithLocalizationService) {
         this.questionService = questionService;
         this.readWriteService = readWriteService;
         this.userService = userService;
         this.appConfig = appConfig;
-        this.localizationService = localizationService;
+        this.writeWithLocalizationService = writeWithLocalizationService;
     }
 
     @Override
@@ -68,9 +68,9 @@ public class ExamServiceImpl implements ExamService {
     }
 
     private void printResult(ExamResult examResult) {
-        readWriteService.writeString(localizationService.getMessage("exam.result", examResult.getUser().getSurname(),
-                examResult.getUser().getName(), examResult.getCorrectAnswers(), appConfig.getSuccessScore()));
-        readWriteService.writeString(localizationService.getMessage(examResult.isPassed() ? "exam.pass" : "exam.not.pass"));
+        writeWithLocalizationService.writeWithLocalization("exam.result", examResult.getUser().getSurname(),
+                examResult.getUser().getName(), examResult.getCorrectAnswers(), appConfig.getSuccessScore());
+        writeWithLocalizationService.writeWithLocalization(examResult.isPassed() ? "exam.pass" : "exam.not.pass");
     }
 
     private int readAnswer() {
@@ -78,7 +78,7 @@ public class ExamServiceImpl implements ExamService {
         do {
             answerNumber = readWriteService.readInt();
             if (answerNumber < 0 || answerNumber > 4) {
-                readWriteService.writeString(localizationService.getMessage("exam.questions.count", 1, 4));
+                writeWithLocalizationService.writeWithLocalization("exam.questions.count", 1, 4);
             }
         }
         while (answerNumber < 0 || answerNumber > 4);
