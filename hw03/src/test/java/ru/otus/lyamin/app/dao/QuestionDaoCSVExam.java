@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import ru.otus.lyamin.app.config.LocaleProvider;
 import ru.otus.lyamin.app.entity.Question;
 
 import java.util.List;
@@ -17,12 +18,13 @@ import static org.mockito.Mockito.when;
 class QuestionDaoCSVExam {
     private QuestionDaoCSV questionDao;
     private final ResourceLoader resourceLoader = mock(ResourceLoader.class);
+    private final LocaleProvider localeProvider =  mock(LocaleProvider.class);
 
     @BeforeEach
     void setUp() {
         Resource path = new ClassPathResource("csv/en-US.csv");
         when(resourceLoader.getResource(any())).thenReturn(path);
-        questionDao = new QuestionDaoCSV("", resourceLoader);
+        questionDao = new QuestionDaoCSV(localeProvider, resourceLoader);
     }
 
     @Test

@@ -2,10 +2,10 @@ package ru.otus.lyamin.app.dao;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
+import ru.otus.lyamin.app.config.LocaleProvider;
 import ru.otus.lyamin.app.entity.Answer;
 import ru.otus.lyamin.app.entity.Question;
 import ru.otus.lyamin.app.exception.QuestionLoadingException;
@@ -19,11 +19,11 @@ import java.util.List;
 
 @Component
 public class QuestionDaoCSV implements QuestionDao {
-
     private final Resource questions;
 
-    public QuestionDaoCSV(@Qualifier("appLocale") String appLocale, ResourceLoader resourceLoader) {
-        this.questions = resourceLoader.getResource(appLocale);
+
+    public QuestionDaoCSV(LocaleProvider localeProvider, ResourceLoader resourceLoader) {
+        this.questions = resourceLoader.getResource(localeProvider.getFilePath());
     }
 
     @Override

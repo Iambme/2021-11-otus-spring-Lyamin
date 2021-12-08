@@ -1,7 +1,7 @@
 package ru.otus.lyamin.app.service.impl;
 
 import org.springframework.stereotype.Service;
-import ru.otus.lyamin.app.config.AppConfig;
+import ru.otus.lyamin.app.config.ExamConfig;
 import ru.otus.lyamin.app.entity.Answer;
 import ru.otus.lyamin.app.entity.Exam;
 import ru.otus.lyamin.app.entity.ExamResult;
@@ -15,24 +15,21 @@ public class ExamServiceImpl implements ExamService {
     private final QuestionService questionService;
     private final ReadWriteService readWriteService;
     private final UserService userService;
-    private final AppConfig appConfig;
+    private final ExamConfig examConfig;
     private final WriteWithLocalizationService writeWithLocalizationService;
 
-    public ExamServiceImpl(QuestionService questionService, ReadWriteService readWriteService, UserService userService, AppConfig appConfig, WriteWithLocalizationService writeWithLocalizationService) {
+    public ExamServiceImpl(QuestionService questionService, ReadWriteService readWriteService, UserService userService, ExamConfig examConfig, WriteWithLocalizationService writeWithLocalizationService) {
         this.questionService = questionService;
         this.readWriteService = readWriteService;
         this.userService = userService;
-        this.appConfig = appConfig;
+        this.examConfig = examConfig;
         this.writeWithLocalizationService = writeWithLocalizationService;
     }
 
     @Override
     public void startExam() {
-        ExamResult examResult = new ExamResult();
-        Exam exam = new Exam(questionService.getQuestions(), appConfig.getSuccessScore());
-
-        examResult.setUser(userService.getUser());
-        examResult.setExam(exam);
+        Exam exam = new Exam(questionService.getQuestions(), examConfig.getSuccessScore());
+        ExamResult examResult = new ExamResult(userService.getUser(), exam);
 
         examResult.getExam().getQuestionList().forEach(question -> {
             boolean isCorrectAnswerResult = askQuestion(question);
@@ -43,7 +40,7 @@ public class ExamServiceImpl implements ExamService {
     }
 
     private void checkPassed(ExamResult examResult) {
-        if (examResult.getCorrectAnswers() >= appConfig.getSuccessScore()) {
+        if (examResult.getCorrectAnswers() >= examConfig.getSuccessScore()) {
             examResult.setPassed(true);
         }
     }
@@ -69,7 +66,7 @@ public class ExamServiceImpl implements ExamService {
 
     private void printResult(ExamResult examResult) {
         writeWithLocalizationService.writeWithLocalization("exam.result", examResult.getUser().getSurname(),
-                examResult.getUser().getName(), examResult.getCorrectAnswers(), appConfig.getSuccessScore());
+                examResult.getUser().getName(), examResult.getCorrectAnswers(), examConfig.getSuccessScore());
         writeWithLocalizationService.writeWithLocalization(examResult.isPassed() ? "exam.pass" : "exam.not.pass");
     }
 

@@ -1,9 +1,13 @@
 exam:
   success-score: 3
 
+
 locale:
-#  i18n: en-US
-  i18n: ru-RU
+  path: csv/
+  extension: .csv
+  i18n: en-US
+#  i18n: ru-RU
+
 
 spring:
   output:
