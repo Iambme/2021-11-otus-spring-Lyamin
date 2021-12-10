@@ -2,7 +2,7 @@ package ru.otus.lyamin.app.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.otus.lyamin.app.config.ExamConfig;
+import ru.otus.lyamin.app.config.ExamPropertiesProvider;
 import ru.otus.lyamin.app.service.impl.ExamServiceImpl;
 import ru.otus.lyamin.app.service.impl.UserServiceImpl;
 import ru.otus.lyamin.app.service.interf.*;
@@ -17,15 +17,14 @@ class ExamServiceImplTest {
     private final QuestionService questionService = mock(QuestionService.class);
     private final ReadWriteService readWriteService = mock(ReadWriteService.class);
     private final UserService userService = mock(UserServiceImpl.class);
-    private final ExamConfig examConfig = mock(ExamConfig.class);
+    private final ExamPropertiesProvider examPropertiesProvider = mock(ExamPropertiesProvider.class);
     private final WriteWithLocalizationService writeWithLocalizationService = mock(WriteWithLocalizationService.class);
     private ExamService examService;
 
 
     @BeforeEach
     void setUp() {
-        examConfig.setSuccessScore(1);
-        examService = new ExamServiceImpl(questionService, readWriteService, userService, examConfig, writeWithLocalizationService);
+        examService = new ExamServiceImpl(questionService, readWriteService, userService, examPropertiesProvider, writeWithLocalizationService);
     }
 
     @Test

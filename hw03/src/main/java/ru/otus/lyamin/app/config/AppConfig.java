@@ -2,7 +2,6 @@ package ru.otus.lyamin.app.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
@@ -11,7 +10,7 @@ import java.util.Locale;
 @Configuration
 @Data
 @ConfigurationProperties(prefix = "app")
-public class AppConfig implements LocaleProvider, FileNameProvider {
+public class AppConfig implements LocaleProvider, FileNameProvider, ExamPropertiesProvider {
     private int success;
     private String path;
     private String extension;
@@ -21,11 +20,6 @@ public class AppConfig implements LocaleProvider, FileNameProvider {
     @PostConstruct
     private void setLocalization(){
         locale =Locale.forLanguageTag(localeTag);
-    }
-
-    @Bean
-    public ExamConfig examConfig() {
-        return new ExamConfig(success);
     }
 
     @Override
@@ -41,5 +35,10 @@ public class AppConfig implements LocaleProvider, FileNameProvider {
     @Override
     public String getFileName() {
         return path + localeTag + extension;
+    }
+
+    @Override
+    public int getSuccessScore() {
+        return success;
     }
 }
