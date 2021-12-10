@@ -2,7 +2,7 @@ app:
   success: 3
   path: csv/
   extension: .csv
-  locale-tag: en-US
+  locale-tag: ru-RU
 
 
 
