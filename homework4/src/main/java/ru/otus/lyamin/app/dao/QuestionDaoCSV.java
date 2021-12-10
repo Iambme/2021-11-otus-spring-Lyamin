@@ -1,8 +1,8 @@
 package ru.otus.lyamin.app.dao;
 
+import lombok.AllArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
@@ -19,19 +19,16 @@ import java.util.List;
 
 
 @Component
+@AllArgsConstructor
 public class QuestionDaoCSV implements QuestionDao {
-    private final Resource questions;
-
-    @Autowired
-    public QuestionDaoCSV(FileNameProvider fileNameProvider, ResourceLoader resourceLoader) {
-        this.questions = resourceLoader.getResource(fileNameProvider.getFileName());
-    }
+    private final ResourceLoader resourceLoader;
+    private final FileNameProvider fileNameProvider;
 
     @Override
     public List<Question> getQuestions() {
         List<Question> questionList = new ArrayList<>();
         List<Answer> answerList;
-        try (Reader in = new InputStreamReader((questions.getInputStream()))) {
+        try (Reader in = new InputStreamReader((getResourceCSV().getInputStream()))) {
             Iterable<CSVRecord> records = CSVFormat.DEFAULT
                     .withFirstRecordAsHeader()
                     .parse(in);
@@ -60,4 +57,7 @@ public class QuestionDaoCSV implements QuestionDao {
         return answerList;
     }
 
+    private Resource getResourceCSV() {
+        return resourceLoader.getResource(fileNameProvider.getFileName());
+    }
 }
