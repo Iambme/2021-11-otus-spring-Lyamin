@@ -11,6 +11,6 @@ public class AnswerPrototype {
         return new Answer("testCorrectAnswerText",true,1);
     }
     public static Answer getIncorrectAnswer(){
-        return new Answer("testCorrectAnswerText",false,2);
+        return new Answer("testIncorrectAnswerText",false,2);
     }
 }

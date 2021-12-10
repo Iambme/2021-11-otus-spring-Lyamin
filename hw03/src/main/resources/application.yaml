@@ -1,12 +1,9 @@
-exam:
-  success-score: 3
-
-
-locale:
+app:
+  success: 3
   path: csv/
   extension: .csv
-  i18n: en-US
-#  i18n: ru-RU
+  locale-tag: en-US
+
 
 
 spring:

@@ -4,8 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.otus.lyamin.app.config.ExamConfig;
 import ru.otus.lyamin.app.service.impl.ExamServiceImpl;
-import ru.otus.lyamin.app.service.impl.QuestionServiceImpl;
-import ru.otus.lyamin.app.service.impl.ReadWriteServiceImpl;
 import ru.otus.lyamin.app.service.impl.UserServiceImpl;
 import ru.otus.lyamin.app.service.interf.*;
 
@@ -15,9 +13,9 @@ import static org.mockito.Mockito.*;
 import static ru.otus.lyamin.app.prototype.QuestionPrototype.getQuestion;
 import static ru.otus.lyamin.app.prototype.UserPrototype.getTestUser;
 
-class ExamServiceImplExam {
-    private final QuestionService questionService = mock(QuestionServiceImpl.class);
-    private final ReadWriteService readWriteService = mock(ReadWriteServiceImpl.class);
+class ExamServiceImplTest {
+    private final QuestionService questionService = mock(QuestionService.class);
+    private final ReadWriteService readWriteService = mock(ReadWriteService.class);
     private final UserService userService = mock(UserServiceImpl.class);
     private final ExamConfig examConfig = mock(ExamConfig.class);
     private final WriteWithLocalizationService writeWithLocalizationService = mock(WriteWithLocalizationService.class);

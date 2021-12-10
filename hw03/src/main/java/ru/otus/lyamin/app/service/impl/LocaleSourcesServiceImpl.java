@@ -13,17 +13,6 @@ public class LocaleSourcesServiceImpl implements LocaleSourcesService {
     private final MessageSource messageSource;
 
     public String getLocalizeMessage(String messageLabel, Object... params) {
-        String[] parameters = null;
-        if (params != null) {
-            parameters = new String[params.length];
-            for (int i = 0; i < params.length; i++) {
-                parameters[i] = String.valueOf(params[i]);
-            }
-        }
-        return messageSource.getMessage(messageLabel, parameters, localeProvider.getLocale());
-    }
-
-    public String getLocalizeMessage(String messageLabel) {
-        return getLocalizeMessage(messageLabel, null);
+        return messageSource.getMessage(messageLabel, params, localeProvider.getCurrentLocale());
     }
 }
