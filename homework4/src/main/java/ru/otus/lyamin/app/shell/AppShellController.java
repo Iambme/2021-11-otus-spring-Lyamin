@@ -15,7 +15,7 @@ import static org.springframework.shell.Availability.unavailable;
 
 @ShellComponent
 @RequiredArgsConstructor
-public class AppShell {
+public class AppShellController {
     private final LocaleSourcesService localeSourcesService;
     private final ExamService examService;
     private String userName;
