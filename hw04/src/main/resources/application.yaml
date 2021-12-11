@@ -1,0 +1,17 @@
+app:
+  success: 3
+  path: csv/
+  extension: .csv
+  locale-tag: ru-RU
+
+
+
+spring:
+  output:
+    ansi:
+      enabled: always
+  messages:
+    basename: i18n/messages
+  main:
+    allow-circular-references: true
+#    https://github.com/spring-projects/spring-shell/issues/324 - разрешил цикличные зависимости из-за конфликта версий shell и boot
