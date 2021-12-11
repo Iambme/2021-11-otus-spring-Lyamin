@@ -1,0 +1,14 @@
+app:
+  success: 3
+  path: csv/
+  extension: .csv
+  locale-tag: en-US
+
+
+
+spring:
+  output:
+    ansi:
+      enabled: always
+  messages:
+    basename: i18n/messages
