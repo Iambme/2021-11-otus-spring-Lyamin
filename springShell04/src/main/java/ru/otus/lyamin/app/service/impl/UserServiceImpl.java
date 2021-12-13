@@ -3,14 +3,12 @@ package ru.otus.lyamin.app.service.impl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.lyamin.app.entity.User;
-import ru.otus.lyamin.app.service.interf.ReadWriteService;
 import ru.otus.lyamin.app.service.interf.UserService;
 import ru.otus.lyamin.app.service.interf.WriteWithLocalizationService;
 
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final ReadWriteService readWriteService;
     private final WriteWithLocalizationService writeWithLocalizationService;
 
     @Override
@@ -20,11 +18,11 @@ public class UserServiceImpl implements UserService {
 
     private String readSurname() {
         writeWithLocalizationService.writeWithLocalization("user.enter.surname");
-        return readWriteService.readString();
+        return writeWithLocalizationService.readString();
     }
 
     private String readName() {
         writeWithLocalizationService.writeWithLocalization("user.enter.name");
-        return readWriteService.readString();
+        return writeWithLocalizationService.readString();
     }
 }

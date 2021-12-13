@@ -7,7 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.lyamin.app.config.ExamPropertiesProvider;
 import ru.otus.lyamin.app.service.impl.ExamServiceImpl;
-import ru.otus.lyamin.app.service.interf.*;
+import ru.otus.lyamin.app.service.interf.ExamService;
+import ru.otus.lyamin.app.service.interf.QuestionService;
+import ru.otus.lyamin.app.service.interf.UserService;
+import ru.otus.lyamin.app.service.interf.WriteWithLocalizationService;
 
 import java.util.List;
 
@@ -21,8 +24,6 @@ class ExamServiceImplTest {
     @MockBean
     private QuestionService questionService;
     @MockBean
-    private ReadWriteService readWriteService;
-    @MockBean
     private UserService userService;
     @MockBean
     private ExamPropertiesProvider examPropertiesProvider;
@@ -35,13 +36,13 @@ class ExamServiceImplTest {
     @DisplayName("корректно запускает экзамен")
     @Test
     void startExam() {
-        when(readWriteService.readInt()).thenReturn(1);
+        when(writeWithLocalizationService.readInt()).thenReturn(1);
         when(userService.getUser()).thenReturn(getTestUser());
         when(questionService.getQuestions()).thenReturn(List.of(getQuestion(), getQuestion()));
         examService.startExam();
-        verify(readWriteService, atLeastOnce()).writeString(any());
-        verify(readWriteService, atLeastOnce()).readInt();
-        verify(readWriteService, never()).readString();
+        verify(writeWithLocalizationService, atLeastOnce()).writeString(any());
+        verify(writeWithLocalizationService, atLeastOnce()).readInt();
+        verify(writeWithLocalizationService, never()).readString();
         verify(examPropertiesProvider,atLeastOnce()).getSuccessScore();
         verify(writeWithLocalizationService,atLeastOnce()).writeWithLocalization(any());
 

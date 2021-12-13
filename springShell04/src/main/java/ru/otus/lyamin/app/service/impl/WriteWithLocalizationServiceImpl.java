@@ -13,13 +13,32 @@ public class WriteWithLocalizationServiceImpl implements WriteWithLocalizationSe
     private final ReadWriteService readWriteService;
 
 
-
     public void writeWithLocalization(String messageLabel, Object... params) {
         readWriteService.writeString(localeSourcesService.getLocalizeMessage(messageLabel, params));
     }
 
     public void writeWithLocalization(String messageLabel) {
         writeWithLocalization(messageLabel, (Object) null);
+    }
+
+    @Override
+    public void writeString(String outputString) {
+        readWriteService.writeString(outputString);
+    }
+
+    @Override
+    public String readString() {
+        return readWriteService.readString();
+    }
+
+    @Override
+    public int readInt() {
+        return readWriteService.readInt();
+    }
+
+    @Override
+    public void writeString(String out, Object... args) {
+        readWriteService.writeString(out, args);
     }
 
 }

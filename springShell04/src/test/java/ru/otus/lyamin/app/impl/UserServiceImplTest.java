@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.lyamin.app.entity.User;
 import ru.otus.lyamin.app.service.impl.UserServiceImpl;
-import ru.otus.lyamin.app.service.interf.ReadWriteService;
 import ru.otus.lyamin.app.service.interf.UserService;
 import ru.otus.lyamin.app.service.interf.WriteWithLocalizationService;
 
@@ -19,8 +18,6 @@ import static ru.otus.lyamin.app.prototype.UserPrototype.getTestUser;
 @SpringBootTest(classes = UserServiceImpl.class)
 class UserServiceImplTest {
     @MockBean
-    private ReadWriteService readWriteService;
-    @MockBean
     private WriteWithLocalizationService writeWithLocalizationService;
 
     @Autowired
@@ -29,10 +26,10 @@ class UserServiceImplTest {
     @DisplayName("корректно создает юзера")
     @Test
     void getUser() {
-        when(readWriteService.readString()).thenReturn("test");
+        when(writeWithLocalizationService.readString()).thenReturn("test");
         User testUser = userService.getUser();
         assertEquals(getTestUser(), testUser);
-        verify(readWriteService, times(2)).readString();
-        verify(writeWithLocalizationService,times(2)).writeWithLocalization(any());
+        verify(writeWithLocalizationService, times(2)).readString();
+        verify(writeWithLocalizationService, times(2)).writeWithLocalization(any());
     }
 }

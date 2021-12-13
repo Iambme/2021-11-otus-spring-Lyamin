@@ -6,21 +6,23 @@ import ru.otus.lyamin.app.entity.Answer;
 import ru.otus.lyamin.app.entity.Exam;
 import ru.otus.lyamin.app.entity.ExamResult;
 import ru.otus.lyamin.app.entity.Question;
-import ru.otus.lyamin.app.service.interf.*;
+import ru.otus.lyamin.app.service.interf.ExamService;
+import ru.otus.lyamin.app.service.interf.QuestionService;
+import ru.otus.lyamin.app.service.interf.UserService;
+import ru.otus.lyamin.app.service.interf.WriteWithLocalizationService;
 
 import java.util.List;
 
 @Service
 public class ExamServiceImpl implements ExamService {
     private final QuestionService questionService;
-    private final ReadWriteService readWriteService;
     private final UserService userService;
     private final ExamPropertiesProvider examPropertiesProvider;
     private final WriteWithLocalizationService writeWithLocalizationService;
 
-    public ExamServiceImpl(QuestionService questionService, ReadWriteService readWriteService, UserService userService, ExamPropertiesProvider examPropertiesProvider, WriteWithLocalizationService writeWithLocalizationService) {
+    public ExamServiceImpl(QuestionService questionService, UserService userService, ExamPropertiesProvider examPropertiesProvider, WriteWithLocalizationService writeWithLocalizationService) {
         this.questionService = questionService;
-        this.readWriteService = readWriteService;
+
         this.userService = userService;
         this.examPropertiesProvider = examPropertiesProvider;
         this.writeWithLocalizationService = writeWithLocalizationService;
@@ -57,11 +59,11 @@ public class ExamServiceImpl implements ExamService {
     }
 
     private void writeAnswer(int answerIndex, String answer) {
-        readWriteService.writeString(answerIndex + " - " + answer);
+        writeWithLocalizationService.writeString(answerIndex + " - " + answer);
     }
 
     private void writeQuestion(String question) {
-        readWriteService.writeString(question);
+        writeWithLocalizationService.writeString(question);
     }
 
     private void printResult(ExamResult examResult) {
@@ -73,7 +75,7 @@ public class ExamServiceImpl implements ExamService {
     private int readAnswer() {
         int answerNumber;
         do {
-            answerNumber = readWriteService.readInt();
+            answerNumber = writeWithLocalizationService.readInt();
             if (answerNumber < 0 || answerNumber > 4) {
                 writeWithLocalizationService.writeWithLocalization("exam.questions.count", 1, 4);
             }

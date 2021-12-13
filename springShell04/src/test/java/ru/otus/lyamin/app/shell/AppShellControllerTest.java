@@ -20,11 +20,11 @@ import static org.mockito.Mockito.verify;
 class AppShellControllerTest {
 
     @MockBean
-    LocaleSourcesService localeSourcesService;
+    private LocaleSourcesService localeSourcesService;
     @MockBean
-    ExamService examService;
+    private ExamService examService;
     @Autowired
-    AppShellController appShellController;
+    private AppShellController appShellController;
 
     @DisplayName("корректно приветствует при логине")
     @Test
