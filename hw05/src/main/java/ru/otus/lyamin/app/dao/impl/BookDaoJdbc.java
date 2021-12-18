@@ -20,7 +20,7 @@ import java.util.Map;
 
 import static java.util.Collections.emptyMap;
 
-@SuppressWarnings({"SqlNoDataSourceInspection", "ConstantConditions", "SqlDialectInspection"})
+@SuppressWarnings({"ConstantConditions", "SqlDialectInspection"})
 @RequiredArgsConstructor
 @Repository
 public class BookDaoJdbc implements BookDao {
