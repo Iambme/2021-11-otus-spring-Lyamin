@@ -7,13 +7,13 @@ import java.util.List;
 public interface BookDao {
     int countOfBooks();
 
-    Book getBookById(long id);
+    Book getBookById(Long id);
 
     List<Book> getBooks();
 
-    long addBook(Book book);
+    Long addBook(Book book);
 
     int updateBook(Book book);
 
-    int deleteBookById(long id);
+    int deleteBookById(Long id);
 }

@@ -3,11 +3,8 @@ spring:
     url: jdbc:h2:mem:librarydb
   main:
     allow-circular-references: true
-  sql:
-    init:
-      schema-locations: schema.sql
-      data-locations: data.sql
-      mode: always
+  liquibase:
+    change-log: db.changelog/liquibase-changelog.xml
 
   h2:
     console:

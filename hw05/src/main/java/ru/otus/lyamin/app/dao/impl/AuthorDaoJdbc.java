@@ -30,7 +30,7 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public Author getAuthorById(long id) {
+    public Author getAuthorById(Long id) {
         return jdbc.queryForObject("select * from author where id = :id", Map.of("id", id), authorRowMapper);
     }
 
@@ -40,7 +40,7 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public long addAuthor(Author author) {
+    public Long addAuthor(Author author) {
         SqlParameterSource params = new MapSqlParameterSource(Map.of(
                 "firstName", author.getFirstName(), "lastName", author.getLastName()));
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -57,7 +57,7 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public int deleteAuthorById(long id) {
+    public int deleteAuthorById(Long id) {
         return jdbc.update("delete from author where id = :id", Map.of("id", id));
     }
 }

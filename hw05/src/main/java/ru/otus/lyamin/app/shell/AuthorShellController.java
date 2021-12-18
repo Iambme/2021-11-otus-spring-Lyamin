@@ -24,14 +24,14 @@ public class AuthorShellController {
         return authorService.getAuthors();
     }
 
-    @ShellMethod(value = "Get Author by id", key = {"ida", "id-author"})
+    @ShellMethod(value = "Get Author by id", key = {"geta", "get-author"})
     public Author getAuthorById(@ShellOption Long id) {
         return authorService.getAuthorById(id);
     }
 
     @ShellMethod(value = "Insert Author", key = {"adda", "add-author"})
     public String addAuthor(@ShellOption String firstName, @ShellOption String lastName) {
-        long id = authorService.addAuthor(firstName, lastName);
+        Long id = authorService.addAuthor(firstName, lastName);
 
         return id > 0 ? "Author added successfully" : "Author has not been added";
     }

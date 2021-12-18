@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Genre {
+    public Genre(String name) {
+        this(null, name);
+    }
+
     private Long id;
     private String name;
 }

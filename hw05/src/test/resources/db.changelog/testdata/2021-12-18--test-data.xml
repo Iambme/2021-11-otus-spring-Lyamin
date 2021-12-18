@@ -1,0 +1,41 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="01" author="plyamin">
+
+        <insert tableName="author">
+            <column name="first_name" value="testAuthorFirstname1"/>
+            <column name="last_name" value="TestAuthorLastname1"/>
+        </insert>
+        <insert tableName="author">
+            <column name="first_name" value="testAuthorFirstname2"/>
+            <column name="last_name" value="TestAuthorLastname2"/>
+        </insert>
+        <insert tableName="author">
+            <column name="first_name" value="testAuthorForDelete"/>
+            <column name="last_name" value="testAuthorForDelete"/>
+        </insert>
+        <insert tableName="genre">
+            <column name="name" value="testGenreName1"/>
+        </insert>
+        <insert tableName="genre">
+            <column name="name" value="testGenreName2"/>
+        </insert>
+        <insert tableName="genre">
+            <column name="name" value="testGenreForDelete"/>
+        </insert>
+        <insert tableName="book">
+            <column name = "title" value="testBookTitle1"/>
+            <column name = "author_id" value = "1"/>
+            <column name = "genre_id" value = "1"/>
+        </insert>
+        <insert tableName="book">
+            <column name = "title" value="testBookTitle2"/>
+            <column name = "author_id" value = "2"/>
+            <column name = "genre_id" value = "2"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

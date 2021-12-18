@@ -24,14 +24,14 @@ public class GenreShellController {
         return genreService.getGenres();
     }
 
-    @ShellMethod(value = "Get Genre by id", key = {"idg", "id-genre"})
+    @ShellMethod(value = "Get Genre by id", key = {"getg", "id-genre"})
     public Genre getGenreById(@ShellOption Long id) {
         return genreService.getGenreById(id);
     }
 
     @ShellMethod(value = "Insert Genre", key = {"addg", "add-genre"})
     public String addGenre(@ShellOption String name) {
-        long id = genreService.addGenre(name);
+        Long id = genreService.addGenre(name);
 
         return id > 0 ? "Genre added successfully" : "Genre has not been added";
     }

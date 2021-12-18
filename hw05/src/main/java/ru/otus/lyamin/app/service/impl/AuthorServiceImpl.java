@@ -30,8 +30,8 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public long addAuthor(String firstName, String lastName) {
-        return authorDao.addAuthor(validateAuthor(new Author(null, firstName, lastName)));
+    public Long addAuthor(String firstName, String lastName) {
+        return authorDao.addAuthor(validateAuthor(new Author(firstName, lastName)));
     }
 
     @Override
@@ -41,7 +41,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public int deleteAuthorById(long id) {
+    public int deleteAuthorById(Long id) {
         return authorDao.deleteAuthorById(id);
     }
 

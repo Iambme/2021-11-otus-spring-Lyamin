@@ -3,9 +3,7 @@ package ru.otus.lyamin.app.service.impl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.lyamin.app.dao.interf.BookDao;
-import ru.otus.lyamin.app.entity.Author;
 import ru.otus.lyamin.app.entity.Book;
-import ru.otus.lyamin.app.entity.Genre;
 import ru.otus.lyamin.app.exception.LibraryException;
 import ru.otus.lyamin.app.service.interf.BookService;
 
@@ -33,18 +31,18 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Long addBook(String title, Long authorId, Long genreId) {
-        Book book = new Book(null, title, new Author(authorId, null, null), new Genre(genreId, null));
+        Book book = new Book(title, authorId, genreId);
         return bookDao.addBook(validateBook(book));
     }
 
     @Override
     public int updateBook(Long id, String name, Long authorId, Long genreId) {
-        Book book = new Book(id, name, new Author(authorId, null, null), new Genre(genreId, null));
+        Book book = new Book(id, name, authorId, genreId);
         return bookDao.updateBook(validateBook(book));
     }
 
     @Override
-    public int deleteBookById(long id) {
+    public int deleteBookById(Long id) {
         return bookDao.deleteBookById(id);
     }
 

@@ -20,7 +20,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre getGenreById(long id) {
+    public Genre getGenreById(Long id) {
         return genreDao.getGenreById(id);
     }
 
@@ -30,8 +30,8 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public long addGenre(String name) {
-        return genreDao.addGenre(validateGenre(new Genre(null, name)));
+    public Long addGenre(String name) {
+        return genreDao.addGenre(validateGenre(new Genre(name)));
     }
 
     @Override
@@ -40,7 +40,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public int deleteGenreById(long id) {
+    public int deleteGenreById(Long id) {
         return genreDao.deleteGenreById(id);
     }
 

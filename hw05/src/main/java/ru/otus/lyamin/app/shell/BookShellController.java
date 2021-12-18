@@ -24,7 +24,7 @@ public class BookShellController {
         return bookService.getBooks();
     }
 
-    @ShellMethod(value = "Get Book by id", key = {"idb", "id-book"})
+    @ShellMethod(value = "Get Book by id", key = {"getb", "id-book"})
     public Book getBookById(@ShellOption Long id) {
         return bookService.getBookById(id);
     }

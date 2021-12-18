@@ -33,8 +33,8 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public Book getBookById(long id) {
-        String sql = "select b.id as book_id, b.name as book_name, " +
+    public Book getBookById(Long id) {
+        String sql = "select b.id as book_id, b.title as book_title, " +
                 "                   a.id as author_id, a.first_name as author_first_name, a.last_name as author_last_name, " +
                 "                   g.id as genre_id, g.name as genre_name " +
                 "          from book b " +
@@ -46,7 +46,7 @@ public class BookDaoJdbc implements BookDao {
 
     @Override
     public List<Book> getBooks() {
-        String sql = "select b.id as book_id, b.name as book_name, " +
+        String sql = "select b.id as book_id, b.title as book_title, " +
                 "                   a.id as author_id, a.first_name as author_first_name, a.last_name as author_last_name, " +
                 "                   g.id as genre_id, g.name as genre_name " +
                 "          from book b " +
@@ -56,11 +56,11 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public long addBook(Book book) {
+    public Long addBook(Book book) {
         SqlParameterSource params = new MapSqlParameterSource(Map.of(
-                "name", book.getTitle(), "authorId", book.getAuthor().getId(), "genreId", book.getGenre().getId()));
+                "title", book.getTitle(), "authorId", book.getAuthor().getId(), "genreId", book.getGenre().getId()));
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbc.update("insert into book (`name`, author_id, genre_id) values (:name, :authorId, :genreId)",
+        jdbc.update("insert into book (`title`, author_id, genre_id) values (:title, :authorId, :genreId)",
                 params, keyHolder);
 
         return keyHolder.getKey().longValue();
@@ -68,13 +68,13 @@ public class BookDaoJdbc implements BookDao {
 
     @Override
     public int updateBook(Book book) {
-        return jdbc.update("update book set `name` = :name, author_id = :authorId, genre_id = :genreId where id = :id",
-                Map.of("id", book.getId(), "name", book.getTitle(),
+        return jdbc.update("update book set `title` = :title, author_id = :authorId, genre_id = :genreId where id = :id",
+                Map.of("id", book.getId(), "title", book.getTitle(),
                         "authorId", book.getAuthor().getId(), "genreId", book.getGenre().getId()));
     }
 
     @Override
-    public int deleteBookById(long id) {
+    public int deleteBookById(Long id) {
         return jdbc.update("delete from book where id = :id", Map.of("id", id));
     }
 
@@ -90,7 +90,7 @@ public class BookDaoJdbc implements BookDao {
                     resultSet.getString("genre_name"));
 
             return new Book(resultSet.getLong("book_id"),
-                    resultSet.getString("book_name"),
+                    resultSet.getString("book_title"),
                     author,
                     genre);
         }

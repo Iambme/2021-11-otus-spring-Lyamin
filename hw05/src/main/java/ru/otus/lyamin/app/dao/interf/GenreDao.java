@@ -11,7 +11,7 @@ public interface GenreDao {
 
     List<Genre> getGenres();
 
-    long addGenre(Genre genre);
+    Long addGenre(Genre genre);
 
     int updateGenre(Genre genre);
 

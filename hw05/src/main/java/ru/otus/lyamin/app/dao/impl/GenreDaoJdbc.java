@@ -40,7 +40,7 @@ public class GenreDaoJdbc implements GenreDao {
     }
 
     @Override
-    public long addGenre(Genre genre) {
+    public Long addGenre(Genre genre) {
         SqlParameterSource params = new MapSqlParameterSource(Map.of("name", genre.getName()));
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update("insert into genre (name) values (:name)", params, keyHolder);
