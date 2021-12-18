@@ -35,23 +35,21 @@ public class BookDaoJdbc implements BookDao {
     @Override
     public Book getBookById(Long id) {
         String sql = "select b.id as book_id, b.title as book_title, " +
-                "                   a.id as author_id, a.first_name as author_first_name, a.last_name as author_last_name, " +
-                "                   g.id as genre_id, g.name as genre_name " +
-                "          from book b " +
-                "               left join  author a  on a.id = b.author_id " +
-                "               left join  genre g  on g.id = b.genre_id " +
-                "           where b.id = :id";
+                "a.id as author_id, a.first_name as author_first_name, a.last_name as author_last_name, " +
+                "g.id as genre_id, g.name as genre_name from book b " +
+                "left join  author a  on a.id = b.author_id " +
+                "left join  genre g  on g.id = b.genre_id " +
+                "where b.id = :id";
         return jdbc.queryForObject(sql, Map.of("id", id), bookRowMapper);
     }
 
     @Override
     public List<Book> getBooks() {
         String sql = "select b.id as book_id, b.title as book_title, " +
-                "                   a.id as author_id, a.first_name as author_first_name, a.last_name as author_last_name, " +
-                "                   g.id as genre_id, g.name as genre_name " +
-                "          from book b " +
-                "               left join  author a  on a.id = b.author_id " +
-                "               left join  genre g  on g.id = b.genre_id";
+                "a.id as author_id, a.first_name as author_first_name, a.last_name as author_last_name, " +
+                "g.id as genre_id, g.name as genre_name from book b " +
+                "left join  author a  on a.id = b.author_id " +
+                "left join  genre g  on g.id = b.genre_id";
         return jdbc.query(sql, bookRowMapper);
     }
 
