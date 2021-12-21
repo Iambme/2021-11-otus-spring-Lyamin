@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:librarydb
+  main:
+    allow-circular-references: true
+  liquibase:
+    change-log: db.changelog/liquibase-changelog.xml
+
+  h2:
+    console:
+      path: /h2-console
+      settings:
+        web-allow-others: true
