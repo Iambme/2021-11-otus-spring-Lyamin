@@ -8,6 +8,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Book {
+
+    private Long id;
+    private String title;
+    private Author author;
+    private Genre genre;
+
     public Book(Long id, String title, long authorId, long genreId) {
         this.id = id;
         this.title = title;
@@ -19,8 +25,4 @@ public class Book {
         this(null, name, authorId, genreId);
     }
 
-    private Long id;
-    private String title;
-    private Author author;
-    private Genre genre;
 }
