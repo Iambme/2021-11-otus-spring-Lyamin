@@ -9,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.lyamin.app.dao.QueryCounter;
-import ru.otus.lyamin.app.dao.impl.BookDaoJPA;
 import ru.otus.lyamin.app.entity.Book;
 
 import java.util.List;
