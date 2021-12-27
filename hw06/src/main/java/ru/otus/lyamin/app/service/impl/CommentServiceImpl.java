@@ -36,7 +36,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public Comment addComment(String text, Long bookId) {
-        return commentDao.addComment(new Comment(text, bookId));
+        return commentDao.addComment(validateComment(new Comment(text, bookId)));
     }
 
     @Override
@@ -49,5 +49,12 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public int deleteCommentById(Long id) {
         return commentDao.deleteCommentById(id);
+    }
+
+    private Comment validateComment(Comment comment) {
+        if (comment.getText().isEmpty()) {
+            throw new LibraryException("Comment text must be not empty");
+        }
+        return comment;
     }
 }

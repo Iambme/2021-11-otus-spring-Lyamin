@@ -19,13 +19,13 @@ public class BookDaoJPA implements BookDao {
 
     @Override
     public Optional<Book> getBookById(Long id) {
-        Map<String, Object> graph = Map.of("javax.persistence.fetchgraph", em.getEntityGraph("Book.Author.Genre"));
+        Map<String, Object> graph = Map.of("javax.persistence.fetchgraph", em.getEntityGraph("book-graph"));
         return Optional.ofNullable(em.find(Book.class, id, graph));
     }
 
     @Override
     public Optional<Book> getBookByTitle(String title) {
-        EntityGraph<?> entityGraph = em.getEntityGraph("Book.Author.Genre");
+        EntityGraph<?> entityGraph = em.getEntityGraph("book-graph");
         TypedQuery<Book> query = em.createQuery("select b from Book b where b.title = :title", Book.class);
         query.setParameter("title", title);
         query.setHint("javax.persistence.fetchgraph", entityGraph);
@@ -34,7 +34,7 @@ public class BookDaoJPA implements BookDao {
 
     @Override
     public List<Book> getBooks() {
-        EntityGraph<?> entityGraph = em.getEntityGraph("Book.Author.Genre");
+        EntityGraph<?> entityGraph = em.getEntityGraph("book-graph");
         TypedQuery<Book> query = em.createQuery("select b from Book b join fetch b.author join fetch b.genre", Book.class);
         query.setHint("javax.persistence.fetchgraph", entityGraph);
         return query.getResultList();
@@ -50,7 +50,7 @@ public class BookDaoJPA implements BookDao {
     }
 
     @Override
-    public int updateBookTitleById(Long id, String title, Long authorId, Long genreId) {
+    public int updateBookById(Long id, String title, Long authorId, Long genreId) {
         Query query = em.createQuery("update Book b set b.title = :title, b.author.id = :authorId, b.genre.id = :genreId where b.id = :id");
         query.setParameter("title", title);
         query.setParameter("authorId", authorId);

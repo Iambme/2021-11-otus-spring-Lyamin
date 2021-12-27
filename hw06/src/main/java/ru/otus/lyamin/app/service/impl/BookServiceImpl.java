@@ -43,8 +43,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public int updateBookTitleById(Long id, String title, Long authorId, Long genreId) {
-        return bookDao.updateBookTitleById(id, title, authorId, genreId);
+    public int updateBookById(Long id, String title, Long authorId, Long genreId) {
+        return bookDao.updateBookById(id, title, authorId, genreId);
     }
 
 

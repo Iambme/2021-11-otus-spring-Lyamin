@@ -3,7 +3,6 @@ package ru.otus.lyamin.app.dao.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.otus.lyamin.app.dao.interf.CommentDao;
-import ru.otus.lyamin.app.entity.Book;
 import ru.otus.lyamin.app.entity.Comment;
 
 import javax.persistence.EntityManager;
@@ -22,7 +21,7 @@ public class CommentDaoJPA implements CommentDao {
 
     @Override
     public Optional<Comment> getCommentById(Long id) {
-        Map<String, Object> graph = Map.of("javax.persistence.fetchgraph", em.getEntityGraph("Comment.Book.Author.Genre"));
+        Map<String, Object> graph = Map.of("javax.persistence.fetchgraph", em.getEntityGraph("comment-graph"));
         return Optional.ofNullable(em.find(Comment.class, id, graph));
     }
 
@@ -30,7 +29,7 @@ public class CommentDaoJPA implements CommentDao {
     public List<Comment> getCommentsByBookId(Long bookId) {
         TypedQuery<Comment> query = em.createQuery("select c from Comment c where c.book.id = :bookId", Comment.class);
         query.setParameter("bookId", bookId);
-        query.setHint("javax.persistence.fetchgraph", em.getEntityGraph("Comment.Book.Author.Genre"));
+        query.setHint("javax.persistence.fetchgraph", em.getEntityGraph("comment-graph"));
         return query.getResultList();
     }
 
@@ -38,7 +37,7 @@ public class CommentDaoJPA implements CommentDao {
     public List<Comment> getComments() {
 
         TypedQuery<Comment> query = em.createQuery("select c from Comment c ", Comment.class);
-        query.setHint("javax.persistence.fetchgraph", em.getEntityGraph("Comment.Book.Author.Genre"));
+        query.setHint("javax.persistence.fetchgraph", em.getEntityGraph("comment-graph"));
 
         return query.getResultList();
     }

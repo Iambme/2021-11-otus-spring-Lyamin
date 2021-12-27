@@ -1,6 +1,5 @@
 package ru.otus.lyamin.app.dao.interf;
 
-import ru.otus.lyamin.app.entity.Book;
 import ru.otus.lyamin.app.entity.Comment;
 
 import java.util.List;

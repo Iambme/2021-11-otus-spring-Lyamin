@@ -11,23 +11,11 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Entity
-@NamedEntityGraph(
-        name = "Comment.Book.Author.Genre",
-        attributeNodes = {
-                @NamedAttributeNode(value = "book", subgraph = "book-subgraph"),
-        },
-        subgraphs = {
-                @NamedSubgraph(
-                        name = "book-subgraph",
-                        attributeNodes = {
-                                @NamedAttributeNode("author"),
-                                @NamedAttributeNode("genre")
-                        }
-                )
-        }
-)
+@NamedEntityGraph(name = "comment-graph",
+        attributeNodes = {@NamedAttributeNode(value = "book", subgraph = "book-subgraph"),},
+            subgraphs = {@NamedSubgraph(name = "book-subgraph",
+                attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genre")})})
 @Table(name = "comment")
 public class Comment {
     @Id

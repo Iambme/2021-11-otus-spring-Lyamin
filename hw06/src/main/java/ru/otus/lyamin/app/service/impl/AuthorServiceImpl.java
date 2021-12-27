@@ -19,13 +19,13 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     @Transactional(readOnly = true)
     public Author getAuthorById(Long id) {
-        return authorDao.getAuthorById(id).orElseThrow(()->new LibraryException("Author not found with id " +id));
+        return authorDao.getAuthorById(id).orElseThrow(() -> new LibraryException("Author not found with id " + id));
     }
 
     @Override
     @Transactional(readOnly = true)
     public Author getAuthorByName(String name) {
-        return authorDao.getAuthorByName(name).orElseThrow(()->new LibraryException("Author not found with name " +name));
+        return authorDao.getAuthorByName(name).orElseThrow(() -> new LibraryException("Author not found with name " + name));
     }
 
     @Override

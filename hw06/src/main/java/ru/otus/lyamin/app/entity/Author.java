@@ -4,11 +4,11 @@ import lombok.*;
 
 import javax.persistence.*;
 
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Entity
 @Table(name = "author")
 public class Author {
