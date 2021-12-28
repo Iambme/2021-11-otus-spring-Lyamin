@@ -9,7 +9,6 @@ public interface BookDao {
     Optional<Book> getBookById(Long id);
     Optional<Book> getBookByTitle(String title);
     List<Book> getBooks();
-    Book addBook(Book book);
-    int updateBookById(Long id, String title, Long authorId, Long genreId);
+    Book saveBook(Book book);
     int deleteBookById(Long id);
 }

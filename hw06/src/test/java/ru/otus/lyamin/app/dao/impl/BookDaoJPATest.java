@@ -72,7 +72,7 @@ class BookDaoJPATest {
     @Test
     void shouldCorrectlyAddBook() {
         Book book = new Book(null, "testBookTitle", getAuthor(), getGenre());
-        Book actualBook = bookDaoJPA.addBook(book);
+        Book actualBook = bookDaoJPA.saveBook(book);
         assertThat(actualBook).isNotNull()
                 .isInstanceOf(Book.class)
                 .extracting("title", "author.id", "genre.id")
@@ -84,13 +84,13 @@ class BookDaoJPATest {
     @DisplayName("корректно обновлять книгу ")
     @Test
     void shouldCorrectlyUpdateBook() {
-        Book expectedBook = getBook();
+        Book expectedBook = em.find(Book.class,getBook().getId());
         expectedBook.setTitle("testNewTitle");
         expectedBook.setAuthor(getAnotherAuthor());
         expectedBook.setGenre(getAnotherGenre());
-        bookDaoJPA.updateBookById(getBook().getId(), "testNewTitle", getAnotherAuthor().getId(), getAnotherGenre().getId());
-        Optional<Book> actualBook = bookDaoJPA.getBookById(getBook().getId());
-        Assertions.assertThat(actualBook).isPresent().get().usingRecursiveComparison().isEqualTo(expectedBook);
+        bookDaoJPA.saveBook(expectedBook);
+        Book actualBook = em.find(Book.class,getBook().getId());
+       assertThat(actualBook).usingRecursiveComparison().isEqualTo(expectedBook);
     }
 
     @DisplayName("корректно удалять книгу ")

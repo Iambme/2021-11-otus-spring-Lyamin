@@ -11,7 +11,7 @@ public interface CommentService {
 
     List<Comment> getComments();
 
-    Comment addComment(String text, Long bookId);
+    Comment saveComment(String text, Long bookId);
 
     int updateCommentTextById(Long id, String text);
 

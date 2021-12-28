@@ -36,8 +36,8 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     @Transactional
-    public Author addAuthor(String name) {
-        return authorDao.addAuthor(validateAuthor(new Author(name)));
+    public Author saveAuthor(String name) {
+        return authorDao.saveAuthor(validateAuthor(new Author(name)));
     }
 
     @Override

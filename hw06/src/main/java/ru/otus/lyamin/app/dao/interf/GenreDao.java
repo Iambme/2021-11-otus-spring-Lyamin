@@ -13,7 +13,7 @@ public interface GenreDao {
 
     List<Genre> getGenres();
 
-    Genre addGenre(Genre genre);
+    Genre saveGenre(Genre genre);
 
     int updateGenreNameById(Long id, String name);
 

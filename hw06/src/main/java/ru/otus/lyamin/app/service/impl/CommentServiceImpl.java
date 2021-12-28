@@ -35,8 +35,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public Comment addComment(String text, Long bookId) {
-        return commentDao.addComment(validateComment(new Comment(text, bookId)));
+    public Comment saveComment(String text, Long bookId) {
+        return commentDao.saveComment(validateComment(new Comment(text, bookId)));
     }
 
     @Override

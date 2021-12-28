@@ -10,7 +10,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -21,29 +20,24 @@ public class CommentDaoJPA implements CommentDao {
 
     @Override
     public Optional<Comment> getCommentById(Long id) {
-        Map<String, Object> graph = Map.of("javax.persistence.fetchgraph", em.getEntityGraph("comment-graph"));
-        return Optional.ofNullable(em.find(Comment.class, id, graph));
+        return Optional.ofNullable(em.find(Comment.class, id));
     }
 
     @Override
     public List<Comment> getCommentsByBookId(Long bookId) {
         TypedQuery<Comment> query = em.createQuery("select c from Comment c where c.book.id = :bookId", Comment.class);
         query.setParameter("bookId", bookId);
-        query.setHint("javax.persistence.fetchgraph", em.getEntityGraph("comment-graph"));
         return query.getResultList();
     }
 
     @Override
     public List<Comment> getComments() {
-
         TypedQuery<Comment> query = em.createQuery("select c from Comment c ", Comment.class);
-        query.setHint("javax.persistence.fetchgraph", em.getEntityGraph("comment-graph"));
-
         return query.getResultList();
     }
 
     @Override
-    public Comment addComment(Comment comment) {
+    public Comment saveComment(Comment comment) {
         if (comment.getId() == null) {
             em.persist(comment);
             return comment;

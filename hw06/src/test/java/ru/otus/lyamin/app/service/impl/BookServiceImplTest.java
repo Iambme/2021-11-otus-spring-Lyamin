@@ -14,8 +14,10 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
+import static ru.otus.lyamin.app.prototype.AuthorPrototype.getAnotherAuthor;
 import static ru.otus.lyamin.app.prototype.BookPrototype.getBook;
 import static ru.otus.lyamin.app.prototype.BookPrototype.getBooks;
+import static ru.otus.lyamin.app.prototype.GenrePrototype.getAnotherGenre;
 
 @DisplayName("Класс BookServiceImpl должен")
 @SpringBootTest(classes = BookServiceImpl.class)
@@ -67,26 +69,25 @@ class BookServiceImplTest {
     @Test
     void shouldCorrectlyAddBook() {
 
-        when(bookDao.addBook(any(Book.class))).thenReturn(getBook());
-        Book actualBook = bookService.addBook(getBook().getTitle(),
+        when(bookDao.saveBook(any(Book.class))).thenReturn(getBook());
+        Book actualBook = bookService.saveBook(getBook().getTitle(),
                 getBook().getAuthor().getId(), getBook().getGenre().getId());
         assertThat(actualBook).usingRecursiveComparison().isEqualTo(getBook());
-        verify(bookDao, times(1)).addBook(any(Book.class));
+        verify(bookDao, times(1)).saveBook(any(Book.class));
     }
 
     @DisplayName("корректно обновлять книгу ")
     @Test
     void shouldCorrectlyUpdateBook() {
-        int expectedCount = 1;
-        when(bookDao.updateBookById(getBook().getId(), getBook().getTitle(),
-                getBook().getAuthor().getId(), getBook().
-                        getGenre().getId())).thenReturn(expectedCount);
-        int actualCount = bookService.updateBookById(getBook().getId(), getBook().getTitle(),
-                getBook().getAuthor().getId(), getBook().getGenre().getId());
-        assertThat(actualCount).isEqualTo(expectedCount);
-        verify(bookDao, times(1)).updateBookById(getBook().getId(), getBook().getTitle(),
-                getBook().getAuthor().getId(), getBook().
-                        getGenre().getId());
+        Book expectedBook = getBook();
+        expectedBook.setTitle("testNewTitle");
+        expectedBook.setAuthor(getAnotherAuthor());
+        expectedBook.setGenre(getAnotherGenre());
+        when(bookDao.saveBook(any(Book.class))).thenReturn(expectedBook);
+        Book actualBook = bookService.updateBookById(expectedBook.getId(), expectedBook.getTitle(),
+                expectedBook.getAuthor().getId(), expectedBook.getGenre().getId());
+        assertThat(actualBook).isEqualTo(expectedBook);
+        verify(bookDao, times(1)).saveBook(any(Book.class));
     }
 
     @DisplayName("корректно удалять книгу ")

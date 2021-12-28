@@ -9,7 +9,7 @@ public interface AuthorDao {
     Optional<Author> getAuthorById(Long id);
     List<Author> getAuthors();
     Optional<Author> getAuthorByName(String name);
-    Author addAuthor(Author author);
+    Author saveAuthor(Author author);
     int updateAuthorNameById(Long id, String name);
     int deleteAuthorById(Long id);
 }

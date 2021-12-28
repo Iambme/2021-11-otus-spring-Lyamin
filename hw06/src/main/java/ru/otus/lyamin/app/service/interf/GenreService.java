@@ -12,7 +12,7 @@ public interface GenreService {
 
     List<Genre> getGenres();
 
-    Genre addGenre(String name);
+    Genre saveGenre(String name);
 
     int updateGenreNameById(Long id, String name);
 

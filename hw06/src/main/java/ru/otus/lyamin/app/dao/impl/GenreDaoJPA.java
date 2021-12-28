@@ -39,7 +39,7 @@ public class GenreDaoJPA implements GenreDao {
     }
 
     @Override
-    public Genre addGenre(Genre genre) {
+    public Genre saveGenre(Genre genre) {
         if (genre.getId() == null) {
             em.persist(genre);
             return genre;

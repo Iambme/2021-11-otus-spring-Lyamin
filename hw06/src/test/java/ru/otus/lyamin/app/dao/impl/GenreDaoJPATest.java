@@ -56,7 +56,7 @@ class GenreDaoJPATest {
     @Test
     void shouldCorrectlyAddGenre() {
         Genre Genre = new Genre(null, "testGenreName");
-        Genre actualGenre = genreDaoJPA.addGenre(Genre);
+        Genre actualGenre = genreDaoJPA.saveGenre(Genre);
         assertThat(actualGenre).isNotNull()
                 .isInstanceOf(Genre.class)
                 .hasFieldOrPropertyWithValue("name", "testGenreName");

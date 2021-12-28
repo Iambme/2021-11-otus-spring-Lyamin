@@ -16,10 +16,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.util.ObjectUtils.isEmpty;
-import static ru.otus.lyamin.app.dao.QueryCounter.getExpectedQueriesCount;
 import static ru.otus.lyamin.app.prototype.BookPrototype.getBook;
 import static ru.otus.lyamin.app.prototype.CommentPrototype.*;
-import static ru.otus.lyamin.app.prototype.CommentPrototype.getDeletableComment;
 
 @DisplayName("Класс CommentDaoJPA должен")
 @DataJpaTest
@@ -41,16 +39,18 @@ class CommentDaoJPATest {
     @DisplayName("возвращать комментарий по id ")
     @Test
     void shouldReturnCommentById() {
+        Long expectedQueryCount = 2L;
         Optional<Comment> actualComment = commentDaoJPA.getCommentById(getComment().getId());
         Comment expectedComment = em.find(Comment.class, getComment().getId());
         Assertions.assertThat(actualComment).isPresent().get()
                 .usingRecursiveComparison().isEqualTo(expectedComment);
-        assertThat(queryCounter.getQueriesCount()).isEqualTo(getExpectedQueriesCount());
+        assertThat(queryCounter.getQueriesCount()).isEqualTo(expectedQueryCount);
     }
 
     @DisplayName("возвращать комментарий по id книги ")
     @Test
     void shouldReturnCommentByBookId() {
+        Long expectedQueryCount = 2L;
         int expectedCommentCount = 2;
         List<Comment> actualComments = commentDaoJPA.getCommentsByBookId(getBook().getId());
         Assertions.assertThat(actualComments).isNotNull().hasSize(expectedCommentCount)
@@ -58,24 +58,26 @@ class CommentDaoJPATest {
                 .anyMatch(c -> c.getText().equals("testCommentText1"))
                 .anyMatch(c -> c.getText().equals("testCommentText2"))
                 .allMatch(c -> !isEmpty(c.getBook()));
-        assertThat(queryCounter.getQueriesCount()).isEqualTo(getExpectedQueriesCount());
-
+        assertThat(queryCounter.getQueriesCount()).isEqualTo(expectedQueryCount);
     }
 
     @DisplayName("возвращать все комментарии ")
     @Test
     void shouldReturnAllComments() {
+        Long expectedQueryCount = 3L;
         List<Comment> actualCommentList = commentDaoJPA.getComments();
-        Assertions.assertThat(actualCommentList).usingRecursiveFieldByFieldElementComparator()
-                .containsExactlyElementsOf(getComments());
-        assertThat(queryCounter.getQueriesCount()).isEqualTo(getExpectedQueriesCount());
+        Assertions.assertThat(actualCommentList).isNotEmpty()
+                .hasSize(getComments().size())
+                .extracting(Comment::getText)
+                .containsExactlyInAnyOrder(getComment().getText(), getAnotherComment().getText(), getDeletableComment().getText());
+        assertThat(queryCounter.getQueriesCount()).isEqualTo(expectedQueryCount);
     }
 
     @DisplayName("корректно добавлять комментарий ")
     @Test
     void shouldCorrectlyAddComment() {
         Comment Comment = new Comment("testCommentText", getBook().getId());
-        Comment actualComment = commentDaoJPA.addComment(Comment);
+        Comment actualComment = commentDaoJPA.saveComment(Comment);
         assertThat(actualComment).isNotNull()
                 .isInstanceOf(Comment.class)
                 .hasFieldOrPropertyWithValue("text", "testCommentText");
@@ -85,11 +87,11 @@ class CommentDaoJPATest {
     @DisplayName("корректно обновлять комментарий ")
     @Test
     void shouldCorrectlyUpdateComment() {
-        Comment expectedComment = getComment();
+        Comment expectedComment = em.find(Comment.class, getComment().getId());
         expectedComment.setText("testNewText");
         commentDaoJPA.updateCommentTextById(getComment().getId(), "testNewText");
-        Optional<Comment> actualComment = commentDaoJPA.getCommentById(getComment().getId());
-        Assertions.assertThat(actualComment).isPresent().get().usingRecursiveComparison().isEqualTo(expectedComment);
+        Comment actualComment = em.find(Comment.class, getComment().getId());
+        Assertions.assertThat(actualComment).isEqualTo(expectedComment);
     }
 
     @DisplayName("корректно удалять комментарий ")

@@ -34,7 +34,7 @@ public class GenreShellController {
 
     @ShellMethod(value = "Insert Genre", key = {"addg", "add-genre"})
     public String addGenre(@ShellOption String name) throws JsonProcessingException {
-        return objectMapper.writeValueAsString(genreService.addGenre(name));
+        return objectMapper.writeValueAsString(genreService.saveGenre(name));
 
     }
 

@@ -12,9 +12,9 @@ public interface BookService {
 
     List<Book> getBooks();
 
-    Book addBook(String title, Long authorId, Long genreId);
+    Book saveBook(String title, Long authorId, Long genreId);
 
-    int updateBookById(Long id, String title, Long authorId, Long genreId);
+    Book updateBookById(Long id, String title, Long authorId, Long genreId);
 
     int deleteBookById(Long id);
 }

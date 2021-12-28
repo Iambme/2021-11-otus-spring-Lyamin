@@ -33,16 +33,15 @@ public class BookShellController {
 
     @ShellMethod(value = "Insert Book", key = {"addb", "add-book"})
     public String addBook(@ShellOption String name, @ShellOption Long authorId, @ShellOption Long genreId) throws JsonProcessingException {
-        return objectMapper.writeValueAsString(bookService.addBook(name, authorId, genreId));
+        return objectMapper.writeValueAsString(bookService.saveBook(name, authorId, genreId));
 
     }
 
     @ShellMethod(value = "Update Book", key = {"updb", "update-book"})
     public String updateBook(@ShellOption Long id, @ShellOption String title,
-                             @ShellOption Long authorId, @ShellOption Long genreId) {
-        int result = bookService.updateBookById(id, title, authorId, genreId);
+                             @ShellOption Long authorId, @ShellOption Long genreId) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(bookService.updateBookById(id, title, authorId, genreId));
 
-        return result == 1 ? "Book updated successfully" : "Book has not been updated";
     }
 
     @ShellMethod(value = "Delete Book by id", key = {"delb", "delete-b"})

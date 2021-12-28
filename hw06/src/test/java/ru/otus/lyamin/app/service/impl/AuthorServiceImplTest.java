@@ -67,10 +67,10 @@ class AuthorServiceImplTest {
     @Test
     void shouldCorrectlyAddAuthor() {
 
-        when(authorDao.addAuthor(any(Author.class))).thenReturn(getAuthor());
-        Author actualAuthor = authorService.addAuthor(getAuthor().getName());
+        when(authorDao.saveAuthor(any(Author.class))).thenReturn(getAuthor());
+        Author actualAuthor = authorService.saveAuthor(getAuthor().getName());
         assertThat(actualAuthor).usingRecursiveComparison().isEqualTo(getAuthor());
-        verify(authorDao, times(1)).addAuthor(any(Author.class));
+        verify(authorDao, times(1)).saveAuthor(any(Author.class));
     }
 
     @DisplayName("корректно обновлять автора ")

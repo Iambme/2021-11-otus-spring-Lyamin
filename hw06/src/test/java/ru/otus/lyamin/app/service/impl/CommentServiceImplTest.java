@@ -66,10 +66,10 @@ class CommentServiceImplTest {
     @DisplayName("корректно добавлять комментарий ")
     @Test
     void shouldCorrectlyAddComment() {
-        when(commentDao.addComment(any(Comment.class))).thenReturn((getComment()));
-        Comment actualComment = commentService.addComment(getComment().getText(),getBook().getId());
+        when(commentDao.saveComment(any(Comment.class))).thenReturn((getComment()));
+        Comment actualComment = commentService.saveComment(getComment().getText(),getBook().getId());
         assertThat(actualComment).usingRecursiveComparison().isEqualTo(getComment());
-        verify(commentDao, times(1)).addComment(any(Comment.class));
+        verify(commentDao, times(1)).saveComment(any(Comment.class));
     }
 
     @DisplayName("корректно обновлять комментарий ")

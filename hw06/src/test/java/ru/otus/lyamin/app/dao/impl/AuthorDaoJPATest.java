@@ -55,7 +55,7 @@ class AuthorDaoJPATest {
     @Test
     void shouldCorrectlyAddAuthor() {
         Author author = new Author(null, "testAuthorName");
-        Author actualAuthor = authorDaoJPA.addAuthor(author);
+        Author actualAuthor = authorDaoJPA.saveAuthor(author);
         assertThat(actualAuthor).isNotNull()
                 .isInstanceOf(Author.class)
                 .hasFieldOrPropertyWithValue("name", "testAuthorName");

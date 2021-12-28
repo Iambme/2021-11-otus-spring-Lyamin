@@ -34,7 +34,7 @@ public class AuthorShellController {
 
     @ShellMethod(value = "Insert Author", key = {"adda", "add-author"})
     public String addAuthor(@ShellOption String name) throws JsonProcessingException {
-        return objectMapper.writeValueAsString(authorService.addAuthor(name));
+        return objectMapper.writeValueAsString(authorService.saveAuthor(name));
     }
     @ShellMethod(value = "Update Author", key = {"upda", "update-author"})
     public String updateAuthor(@ShellOption Long id, @ShellOption String name) {

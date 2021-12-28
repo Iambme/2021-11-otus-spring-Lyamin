@@ -34,7 +34,7 @@ public class CommentShellController {
 
     @ShellMethod(value = "add Comment", key = {"addc", "add-comment"})
     public String addComment(@ShellOption String text, @ShellOption Long bookId) throws JsonProcessingException {
-        return objectMapper.writeValueAsString(commentService.addComment(text, bookId));
+        return objectMapper.writeValueAsString(commentService.saveComment(text, bookId));
 
     }
 

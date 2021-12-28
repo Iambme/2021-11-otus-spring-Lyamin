@@ -1,6 +1,9 @@
 package ru.otus.lyamin.app.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -12,10 +15,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@NamedEntityGraph(name = "comment-graph",
-        attributeNodes = {@NamedAttributeNode(value = "book", subgraph = "book-subgraph"),},
-            subgraphs = {@NamedSubgraph(name = "book-subgraph",
-                attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genre")})})
 @Table(name = "comment")
 public class Comment {
     @Id
@@ -25,7 +24,7 @@ public class Comment {
     @Column(name = "text")
     private String text;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
     @Fetch(FetchMode.SELECT)
     @BatchSize(size = 5)

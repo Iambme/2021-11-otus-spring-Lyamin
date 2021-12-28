@@ -67,10 +67,10 @@ class GenreServiceImplTest {
     @DisplayName("корректно добавлять жанр ")
     @Test
     void shouldCorrectlyAddGenre() {
-        when(genreDao.addGenre(any(Genre.class))).thenReturn((getGenre()));
-        Genre actualGenre = genreService.addGenre(getGenre().getName());
+        when(genreDao.saveGenre(any(Genre.class))).thenReturn((getGenre()));
+        Genre actualGenre = genreService.saveGenre(getGenre().getName());
         assertThat(actualGenre).usingRecursiveComparison().isEqualTo(getGenre());
-        verify(genreDao, times(1)).addGenre(any(Genre.class));
+        verify(genreDao, times(1)).saveGenre(any(Genre.class));
     }
 
     @DisplayName("корректно обновлять жанр ")

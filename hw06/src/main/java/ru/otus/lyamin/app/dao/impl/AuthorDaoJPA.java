@@ -38,7 +38,7 @@ public class AuthorDaoJPA implements AuthorDao {
     }
 
     @Override
-    public Author addAuthor(Author author) {
+    public Author saveAuthor(Author author) {
         if (author.getId() == null) {
             em.persist(author);
             return author;
