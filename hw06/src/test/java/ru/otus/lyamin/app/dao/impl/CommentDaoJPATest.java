@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.util.ObjectUtils.isEmpty;
+import static ru.otus.lyamin.app.dao.QueryCounter.getExpectedQueriesCount;
 import static ru.otus.lyamin.app.prototype.BookPrototype.getBook;
 import static ru.otus.lyamin.app.prototype.CommentPrototype.*;
 
@@ -39,18 +40,16 @@ class CommentDaoJPATest {
     @DisplayName("возвращать комментарий по id ")
     @Test
     void shouldReturnCommentById() {
-        Long expectedQueryCount = 2L;
         Optional<Comment> actualComment = commentDaoJPA.getCommentById(getComment().getId());
         Comment expectedComment = em.find(Comment.class, getComment().getId());
         Assertions.assertThat(actualComment).isPresent().get()
                 .usingRecursiveComparison().isEqualTo(expectedComment);
-        assertThat(queryCounter.getQueriesCount()).isEqualTo(expectedQueryCount);
+        assertThat(queryCounter.getQueriesCount()).isEqualTo(getExpectedQueriesCount());
     }
 
     @DisplayName("возвращать комментарий по id книги ")
     @Test
     void shouldReturnCommentByBookId() {
-        Long expectedQueryCount = 2L;
         int expectedCommentCount = 2;
         List<Comment> actualComments = commentDaoJPA.getCommentsByBookId(getBook().getId());
         Assertions.assertThat(actualComments).isNotNull().hasSize(expectedCommentCount)
@@ -58,19 +57,18 @@ class CommentDaoJPATest {
                 .anyMatch(c -> c.getText().equals("testCommentText1"))
                 .anyMatch(c -> c.getText().equals("testCommentText2"))
                 .allMatch(c -> !isEmpty(c.getBook()));
-        assertThat(queryCounter.getQueriesCount()).isEqualTo(expectedQueryCount);
+        assertThat(queryCounter.getQueriesCount()).isEqualTo(getExpectedQueriesCount());
     }
 
     @DisplayName("возвращать все комментарии ")
     @Test
     void shouldReturnAllComments() {
-        Long expectedQueryCount = 3L;
         List<Comment> actualCommentList = commentDaoJPA.getComments();
         Assertions.assertThat(actualCommentList).isNotEmpty()
                 .hasSize(getComments().size())
                 .extracting(Comment::getText)
                 .containsExactlyInAnyOrder(getComment().getText(), getAnotherComment().getText(), getDeletableComment().getText());
-        assertThat(queryCounter.getQueriesCount()).isEqualTo(expectedQueryCount);
+        assertThat(queryCounter.getQueriesCount()).isEqualTo(getExpectedQueriesCount());
     }
 
     @DisplayName("корректно добавлять комментарий ")

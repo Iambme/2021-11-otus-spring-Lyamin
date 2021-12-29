@@ -1,9 +1,11 @@
 package ru.otus.lyamin.app.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -23,11 +25,11 @@ public class Book {
     private String title;
 
 
-    @ManyToOne(targetEntity = Author.class)
+    @ManyToOne(targetEntity = Author.class , fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private Author author;
 
-    @ManyToOne(targetEntity = Genre.class)
+    @ManyToOne(targetEntity = Genre.class , fetch = FetchType.LAZY)
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
