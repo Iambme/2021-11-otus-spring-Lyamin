@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.lyamin.app.dao.BookRepository;
+import ru.otus.lyamin.app.dao.CommentRepository;
 import ru.otus.lyamin.app.entity.Author;
 import ru.otus.lyamin.app.entity.Book;
 import ru.otus.lyamin.app.entity.Genre;
@@ -20,6 +21,7 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final AuthorService authorService;
     private final GenreService genreService;
+    private final CommentRepository commentRepository;
 
 
     @Override
@@ -55,6 +57,8 @@ public class BookServiceImpl implements BookService {
         Author author = authorService.findById(authorId);
         Genre genre = genreService.findById(genreId);
         Book book = new Book(title, author, genre);
+        commentRepository.findCommentByBookId(id)
+                .forEach(c -> c.setBook(book));
         return bookRepository.save(validateBook(book));
     }
 
@@ -63,6 +67,8 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public void deleteById(String id) {
         bookRepository.deleteById(id);
+        commentRepository.findCommentByBookId(id)
+                .forEach(c -> c.setBook(null));
     }
 
 

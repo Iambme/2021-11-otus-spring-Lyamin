@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import ru.otus.lyamin.app.dao.BookRepository;
 import ru.otus.lyamin.app.dao.GenreRepository;
 import ru.otus.lyamin.app.entity.Genre;
 import ru.otus.lyamin.app.service.impl.GenreServiceImpl;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
+import static ru.otus.lyamin.app.prototype.AuthorPrototype.getAuthor;
 import static ru.otus.lyamin.app.prototype.GenrePrototype.getGenre;
 import static ru.otus.lyamin.app.prototype.GenrePrototype.getGenres;
 
@@ -23,6 +25,8 @@ import static ru.otus.lyamin.app.prototype.GenrePrototype.getGenres;
 class GenreServiceImplTest {
     @MockBean
     private GenreRepository genreRepository;
+    @MockBean
+    private BookRepository bookRepository;
     @Autowired
     private GenreService genreService;
 
@@ -79,5 +83,6 @@ class GenreServiceImplTest {
     void shouldDeleteGenreById() {
         genreService.deleteById(getGenre().getId());
         verify(genreRepository, times(1)).deleteById(getGenre().getId());
+        verify(bookRepository, times(1)).findByGenreId(getGenre().getId());
     }
 }

@@ -1,6 +1,7 @@
 package ru.otus.lyamin.app.service.impl;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.lyamin.app.dao.AuthorRepository;
@@ -51,12 +52,12 @@ public class AuthorServiceImpl implements AuthorService {
         if (authorOptional.isPresent()) {
             Author author = authorOptional.get();
             author.setName(authorName);
+            validateAuthor(author);
             authorRepository.save(author);
             List<Book> books = bookRepository.findByAuthorId(id);
             books.forEach(book -> {
                 Author bookAuthor = book.getAuthor();
                 bookAuthor.setName(authorName);
-                validateAuthor(author);
             });
             bookRepository.saveAll(books);
         }
@@ -67,6 +68,9 @@ public class AuthorServiceImpl implements AuthorService {
     @Transactional
     public void deleteById(String id) {
         authorRepository.deleteById(id);
+        List<Book> books = bookRepository.findByAuthorId(id);
+        books.forEach(book -> book.setAuthor(null));
+        bookRepository.saveAll(books);
     }
 
     private Author validateAuthor(Author author) {

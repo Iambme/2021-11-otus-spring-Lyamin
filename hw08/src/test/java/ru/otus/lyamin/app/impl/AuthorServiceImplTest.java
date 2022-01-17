@@ -82,5 +82,6 @@ class AuthorServiceImplTest {
     void shouldDeleteAuthorById() {
         authorService.deleteById(getAuthor().getId());
         verify(authorRepository, times(1)).deleteById(getAuthor().getId());
+        verify(bookRepository, times(1)).findByAuthorId(getAuthor().getId());
     }
 }

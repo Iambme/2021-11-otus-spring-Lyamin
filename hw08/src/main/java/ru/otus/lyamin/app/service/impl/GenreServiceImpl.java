@@ -66,6 +66,9 @@ public class GenreServiceImpl implements GenreService {
     @Transactional
     public void deleteById(String id) {
         genreRepository.deleteById(id);
+        List<Book> books = bookRepository.findByGenreId(id);
+        books.forEach(book -> book.setGenre(null));
+        bookRepository.saveAll(books);
     }
 
     private Genre validateGenre(Genre genre) {
