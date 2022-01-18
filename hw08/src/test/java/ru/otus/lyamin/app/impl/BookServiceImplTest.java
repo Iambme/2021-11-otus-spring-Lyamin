@@ -101,7 +101,6 @@ class BookServiceImplTest {
         verify(bookRepository, times(1)).save(any(Book.class));
         verify(authorService, times(1)).findById(expectedBook.getAuthor().getId());
         verify(genreService, times(1)).findById(expectedBook.getGenre().getId());
-        verify(commentRepository,times(1)).findCommentByBookId(getBook().getId());
     }
 
     @DisplayName("корректно удалять книгу ")

@@ -52,13 +52,7 @@ public class GenreServiceImpl implements GenreService {
             Genre genre = genreOptional.get();
             genre.setName(name);
             genreRepository.save(genre);
-            List<Book> books = bookRepository.findByGenreId(id);
-            books.forEach(book -> {
-                Genre bookGenre = book.getGenre();
-                bookGenre.setName(name);
-                validateGenre(genre);
-            });
-            bookRepository.saveAll(books);
+            bookRepository.updateBookGenres(id, name);
         }
     }
 

@@ -7,6 +7,7 @@ import ru.otus.lyamin.app.dao.BookRepository;
 import ru.otus.lyamin.app.dao.CommentRepository;
 import ru.otus.lyamin.app.entity.Author;
 import ru.otus.lyamin.app.entity.Book;
+import ru.otus.lyamin.app.entity.Comment;
 import ru.otus.lyamin.app.entity.Genre;
 import ru.otus.lyamin.app.exception.LibraryException;
 import ru.otus.lyamin.app.service.interf.AuthorService;
@@ -56,10 +57,9 @@ public class BookServiceImpl implements BookService {
     public Book updateById(String id, String title, String authorId, String genreId) {
         Author author = authorService.findById(authorId);
         Genre genre = genreService.findById(genreId);
-        Book book = new Book(title, author, genre);
-        commentRepository.findCommentByBookId(id)
-                .forEach(c -> c.setBook(book));
-        return bookRepository.save(validateBook(book));
+        Book book = validateBook(new Book(title, author, genre));
+        commentRepository.updateCommentsBook(id, book);
+        return bookRepository.save(book);
     }
 
 
@@ -67,8 +67,8 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public void deleteById(String id) {
         bookRepository.deleteById(id);
-        commentRepository.findCommentByBookId(id)
-                .forEach(c -> c.setBook(null));
+        List<Comment> comments = commentRepository.findCommentByBookId(id);
+        commentRepository.deleteAll(comments);
     }
 
 

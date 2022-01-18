@@ -54,14 +54,8 @@ public class AuthorServiceImpl implements AuthorService {
             author.setName(authorName);
             validateAuthor(author);
             authorRepository.save(author);
-            List<Book> books = bookRepository.findByAuthorId(id);
-            books.forEach(book -> {
-                Author bookAuthor = book.getAuthor();
-                bookAuthor.setName(authorName);
-            });
-            bookRepository.saveAll(books);
+            bookRepository.updateBookAuthors(id, authorName);
         }
-
     }
 
     @Override
