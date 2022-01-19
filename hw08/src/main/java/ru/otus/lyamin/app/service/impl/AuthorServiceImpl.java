@@ -61,10 +61,13 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     @Transactional
     public void deleteById(String id) {
-        authorRepository.deleteById(id);
-        List<Book> books = bookRepository.findByAuthorId(id);
-        books.forEach(book -> book.setAuthor(null));
-        bookRepository.saveAll(books);
+        if(!bookRepository.existsBookWithAuthorId(id)) {
+            authorRepository.deleteById(id);
+        }
+        else {
+            throw new LibraryException("The library has books with the author with id " + id);
+        }
+
     }
 
     private Author validateAuthor(Author author) {

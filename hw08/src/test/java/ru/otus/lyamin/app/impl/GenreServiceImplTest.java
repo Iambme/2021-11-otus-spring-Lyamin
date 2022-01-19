@@ -83,6 +83,6 @@ class GenreServiceImplTest {
     void shouldDeleteGenreById() {
         genreService.deleteById(getGenre().getId());
         verify(genreRepository, times(1)).deleteById(getGenre().getId());
-        verify(bookRepository, times(1)).findByGenreId(getGenre().getId());
+        verify(bookRepository, times(1)).existsBookWithGenreId(getGenre().getId());
     }
 }

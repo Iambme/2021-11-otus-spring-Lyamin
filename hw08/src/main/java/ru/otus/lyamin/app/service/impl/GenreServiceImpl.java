@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.lyamin.app.dao.BookRepository;
 import ru.otus.lyamin.app.dao.GenreRepository;
-import ru.otus.lyamin.app.entity.Book;
 import ru.otus.lyamin.app.entity.Genre;
 import ru.otus.lyamin.app.exception.LibraryException;
 import ru.otus.lyamin.app.service.interf.GenreService;
@@ -59,10 +58,12 @@ public class GenreServiceImpl implements GenreService {
     @Override
     @Transactional
     public void deleteById(String id) {
-        genreRepository.deleteById(id);
-        List<Book> books = bookRepository.findByGenreId(id);
-        books.forEach(book -> book.setGenre(null));
-        bookRepository.saveAll(books);
+        if(!bookRepository.existsBookWithGenreId(id)) {
+            genreRepository.deleteById(id);
+        }
+        else {
+            throw new LibraryException("The library has books with the genre with id " + id);
+        }
     }
 
     private Genre validateGenre(Genre genre) {

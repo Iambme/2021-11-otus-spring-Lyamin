@@ -34,5 +34,21 @@ public class BookRepositoryCustomImpl implements BookRepositoryCustom {
         mongoTemplate.updateMulti(query, update, Book.class);
     }
 
+    @Override
+    public boolean existsBookWithAuthorId(String id) {
+        Query query = new Query();
+        query.addCriteria(Criteria
+                .where("author._id").is(id));
+        return mongoTemplate.exists(query, Book.class);
+    }
+
+    @Override
+    public boolean existsBookWithGenreId(String id) {
+        Query query = new Query();
+        query.addCriteria(Criteria
+                .where("genre._id").is(id));
+        return mongoTemplate.exists(query, Book.class);
+    }
+
 
 }
