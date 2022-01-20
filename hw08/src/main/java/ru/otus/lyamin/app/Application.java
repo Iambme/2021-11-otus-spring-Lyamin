@@ -1,18 +1,17 @@
 package ru.otus.lyamin.app;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.cloudyrock.spring.v5.EnableMongock;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import ru.otus.lyamin.app.entity.Author;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
+@EnableMongock
+@EnableConfigurationProperties
 @SpringBootApplication
 public class Application {
 
-    public static void main(String[] args) throws JsonProcessingException {
+    public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-
-
     }
 
 }
