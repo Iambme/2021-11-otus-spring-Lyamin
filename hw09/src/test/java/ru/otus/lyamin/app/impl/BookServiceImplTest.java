@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.lyamin.app.dao.BookRepository;
-import ru.otus.lyamin.app.dao.CommentRepository;
 import ru.otus.lyamin.app.entity.Book;
 import ru.otus.lyamin.app.service.impl.BookServiceImpl;
 import ru.otus.lyamin.app.service.interf.AuthorService;
@@ -29,11 +28,9 @@ class BookServiceImplTest {
     @MockBean
     private BookRepository bookRepository;
     @MockBean
-    private AuthorService authorService;
+    private  AuthorService authorService;
     @MockBean
-    private GenreService genreService;
-    @MockBean
-    private CommentRepository commentRepository;
+    private  GenreService genreService;
     @Autowired
     private BookService bookService;
 
@@ -55,7 +52,7 @@ class BookServiceImplTest {
     void shouldReturnBookByTitle() {
         Book expectedBook = getBook();
         when(bookRepository.findBookByTitle(expectedBook.getTitle())).thenReturn(Optional.of(expectedBook));
-        Book actualBook = bookService.findByTitle(expectedBook.getTitle());
+        Book actualBook = bookService.findByName(expectedBook.getTitle());
         assertThat(actualBook).isNotNull()
                 .isInstanceOf(Book.class)
                 .usingRecursiveComparison()
@@ -75,39 +72,32 @@ class BookServiceImplTest {
         verify(bookRepository, times(1)).findAll();
     }
 
-//    @DisplayName("корректно добавлять книгу ")
-//    @Test
-//    void shouldCorrectlyAddBook() {
-//        when(bookRepository.save(any(Book.class))).thenReturn(getBook());
-//        Book actualBook = bookService.save(getBook().getTitle(),
-//                getBook().getAuthor().getId(), getBook().getGenre().getId());
-//        assertThat(actualBook).usingRecursiveComparison().isEqualTo(getBook());
-//        verify(bookRepository, times(1)).save(any(Book.class));
-//        verify(authorService, times(1)).findById(getBook().getAuthor().getId());
-//        verify(genreService, times(1)).findById(getBook().getGenre().getId());
-//    }
+    @DisplayName("корректно добавлять книгу ")
+    @Test
+    void shouldCorrectlyAddBook() {
+        when(bookRepository.save(any(Book.class))).thenReturn(getBook());
+        Book actualBook = bookService.save(getBook());
+        assertThat(actualBook).usingRecursiveComparison().isEqualTo(getBook());
+        verify(bookRepository, times(1)).save(any(Book.class));
+    }
 
-//    @DisplayName("корректно обновлять книгу ")
-//    @Test
-//    void shouldCorrectlyUpdateBook() {
-//        Book expectedBook = getBook();
-//        expectedBook.setTitle("testNewTitle");
-//        expectedBook.setAuthor(getAnotherAuthor());
-//        expectedBook.setGenre(getAnotherGenre());
-//        when(bookRepository.save(any(Book.class))).thenReturn(expectedBook);
-//        Book actualBook = bookService.updateById(expectedBook.getId(), expectedBook.getTitle(),
-//                expectedBook.getAuthor().getId(), expectedBook.getGenre().getId());
-//        assertThat(actualBook).isEqualTo(expectedBook);
-//        verify(bookRepository, times(1)).save(any(Book.class));
-//        verify(authorService, times(1)).findById(expectedBook.getAuthor().getId());
-//        verify(genreService, times(1)).findById(expectedBook.getGenre().getId());
-//    }
+    @DisplayName("корректно обновлять книгу ")
+    @Test
+    void shouldCorrectlyUpdateBook() {
+        Book expectedBook = getBook();
+        expectedBook.setTitle("testNewTitle");
+        expectedBook.setAuthor(getAnotherAuthor());
+        expectedBook.setGenre(getAnotherGenre());
+        when(bookRepository.save(any(Book.class))).thenReturn(expectedBook);
+        Book actualBook = bookService.save(expectedBook);
+        assertThat(actualBook).isEqualTo(expectedBook);
+        verify(bookRepository, times(1)).save(any(Book.class));
+    }
 
     @DisplayName("корректно удалять книгу ")
     @Test
     void shouldDeleteBookById() {
         bookService.deleteById(getBook().getId());
         verify(bookRepository, times(1)).deleteById(getBook().getId());
-        verify(commentRepository,times(1)).findCommentByBookId(getBook().getId());
     }
 }

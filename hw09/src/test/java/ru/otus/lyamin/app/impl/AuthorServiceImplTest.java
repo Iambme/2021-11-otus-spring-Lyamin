@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.lyamin.app.dao.AuthorRepository;
-import ru.otus.lyamin.app.dao.BookRepository;
 import ru.otus.lyamin.app.entity.Author;
 import ru.otus.lyamin.app.service.impl.AuthorServiceImpl;
 import ru.otus.lyamin.app.service.interf.AuthorService;
@@ -24,8 +23,6 @@ import static ru.otus.lyamin.app.prototype.AuthorPrototype.getAuthors;
 class AuthorServiceImplTest {
     @MockBean
     private AuthorRepository authorRepository;
-    @MockBean
-    private BookRepository bookRepository;
     @Autowired
     private AuthorService authorService;
 
@@ -72,9 +69,20 @@ class AuthorServiceImplTest {
     void shouldCorrectlyAddAuthor() {
 
         when(authorRepository.save(any(Author.class))).thenReturn(getAuthor());
-        Author actualAuthor = authorService.save(getAuthor().getName());
+        Author actualAuthor = authorService.save(getAuthor());
         assertThat(actualAuthor).usingRecursiveComparison().isEqualTo(getAuthor());
         verify(authorRepository, times(1)).save(any(Author.class));
+    }
+
+    @DisplayName("корректно обновлять автора ")
+    @Test
+    void shouldCorrectlyUpdateAuthor() {
+        Author expectedAuthor = getAuthor();
+        expectedAuthor.setName("newName");
+        when(authorRepository.save(expectedAuthor)).thenReturn(expectedAuthor);
+        Author actualAuthor = authorService.save(expectedAuthor);
+        assertThat(actualAuthor).isEqualTo(expectedAuthor);
+        verify(authorRepository, times(1)).save(expectedAuthor);
     }
 
     @DisplayName("корректно удалять автора ")
@@ -82,6 +90,5 @@ class AuthorServiceImplTest {
     void shouldDeleteAuthorById() {
         authorService.deleteById(getAuthor().getId());
         verify(authorRepository, times(1)).deleteById(getAuthor().getId());
-        verify(bookRepository, times(1)).existsBookWithAuthorId(getAuthor().getId());
     }
 }

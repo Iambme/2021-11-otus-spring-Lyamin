@@ -9,14 +9,14 @@ import java.util.List;
 @UtilityClass
 public class AuthorPrototype {
     public static Author getAuthor() {
-        return new Author("1", "testAuthorFirstname1");
+        return new Author(1L, "testAuthorFirstname1");
     }
 
     public static Author getAnotherAuthor() {
-        return new Author("2", "testAuthorFirstname2");
+        return new Author(2L, "testAuthorFirstname2");
     }
     public static Author getDeletableAuthor() {
-        return new Author("3", "testAuthorForDelete");
+        return new Author(3L, "testAuthorForDelete");
     }
 
     public static List<Author> getAuthors() {

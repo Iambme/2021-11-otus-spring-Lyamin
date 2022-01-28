@@ -1,21 +1,23 @@
 spring:
-  data:
-    mongodb:
-      host: localhost
-      port: 27017
-      database: librarydb
-mongock:
-  runner-type: "InitializingBean"
-  change-logs-scan-package:
-    - ru.otus.lyamin.app.changelog
-  mongo-db:
-    write-concern:
-      journal: false
-    read-concern: local
+  datasource:
+    url: jdbc:h2:mem:librarydb
+  main:
+    allow-circular-references: true
+  liquibase:
+    enabled: true
+    drop-first: true
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
 
-logging:
-  level:
-    root: ERROR
+    show-sql: true
 
-server:
-  port: 8080
+    properties:
+      hibernate:
+        format_sql: true
+  h2:
+    console:
+      path: /h2-console
+      settings:
+        web-allow-others: true

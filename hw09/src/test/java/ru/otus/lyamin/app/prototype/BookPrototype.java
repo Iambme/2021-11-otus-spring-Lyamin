@@ -14,11 +14,11 @@ import static ru.otus.lyamin.app.prototype.GenrePrototype.getGenre;
 @UtilityClass
 public class BookPrototype {
     public static Book getBook() {
-        return new Book("1", "testBookTitle1", getAuthor(), getGenre());
+        return new Book(1L, "testBookTitle1", getAuthor(), getGenre());
     }
 
     public static Book getAnotherBook() {
-        return new Book("2", "testBookTitle2", getAnotherAuthor(), getAnotherGenre());
+        return new Book(2L, "testBookTitle2", getAnotherAuthor(), getAnotherGenre());
     }
 
     public static List<Book> getBooks() {

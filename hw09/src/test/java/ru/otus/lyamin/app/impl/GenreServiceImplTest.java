@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.otus.lyamin.app.dao.BookRepository;
 import ru.otus.lyamin.app.dao.GenreRepository;
 import ru.otus.lyamin.app.entity.Genre;
 import ru.otus.lyamin.app.service.impl.GenreServiceImpl;
@@ -24,8 +23,6 @@ import static ru.otus.lyamin.app.prototype.GenrePrototype.getGenres;
 class GenreServiceImplTest {
     @MockBean
     private GenreRepository genreRepository;
-    @MockBean
-    private BookRepository bookRepository;
     @Autowired
     private GenreService genreService;
 
@@ -72,9 +69,19 @@ class GenreServiceImplTest {
     @Test
     void shouldCorrectlyAddGenre() {
         when(genreRepository.save(any(Genre.class))).thenReturn((getGenre()));
-        Genre actualGenre = genreService.save(getGenre().getName());
+        Genre actualGenre = genreService.save(getGenre());
         assertThat(actualGenre).usingRecursiveComparison().isEqualTo(getGenre());
         verify(genreRepository, times(1)).save(any(Genre.class));
+    }
+
+    @DisplayName("корректно обновлять жанр ")
+    @Test
+    void shouldCorrectlyUpdateGenre() {
+        Genre expectedGenre = getGenre();
+        when(genreRepository.save(expectedGenre)).thenReturn(expectedGenre);
+        Genre actualGenre = genreService.save(expectedGenre);
+        assertThat(actualGenre).isEqualTo(expectedGenre);
+        verify(genreRepository, times(1)).save(expectedGenre);
     }
 
     @DisplayName("корректно удалять жанр ")
@@ -82,6 +89,5 @@ class GenreServiceImplTest {
     void shouldDeleteGenreById() {
         genreService.deleteById(getGenre().getId());
         verify(genreRepository, times(1)).deleteById(getGenre().getId());
-        verify(bookRepository, times(1)).existsBookWithGenreId(getGenre().getId());
     }
 }

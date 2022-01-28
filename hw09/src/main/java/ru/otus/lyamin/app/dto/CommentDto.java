@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class CommentDto {
 
-    private String id;
+    private Long id;
     private String text;
 
     public static CommentDto commentDto(Comment comment) {

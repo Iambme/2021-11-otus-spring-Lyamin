@@ -1,37 +1,48 @@
 package ru.otus.lyamin.app.dao;
 
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import ru.otus.lyamin.app.entity.Comment;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.util.ObjectUtils.isEmpty;
-
+import static ru.otus.lyamin.app.dao.QueryCounter.getExpectedQueriesCount;
+import static ru.otus.lyamin.app.prototype.BookPrototype.getBook;
+import static ru.otus.lyamin.app.prototype.CommentPrototype.getComment;
 
 @DisplayName("Класс CommentRepository должен")
-@DataMongoTest(excludeAutoConfiguration = EmbeddedMongoAutoConfiguration.class)
+@DataJpaTest
 class CommentRepositoryTest {
     @Autowired
-    private CommentRepository commentRepository;
+    private TestEntityManager em;
+    private QueryCounter queryCounter;
+
     @Autowired
-    private BookRepository bookRepository;
+    private CommentRepository commentRepository;
+
+    @BeforeEach
+    void setUp() {
+        queryCounter = new QueryCounter(em);
+    }
 
     @DisplayName("возвращать комментарий по id книги ")
     @Test
     void shouldReturnCommentByBookId() {
-        String EXISTING_BOOK_ID = bookRepository.findAll().stream().findFirst().orElseThrow().getId();
-        int EXPECTED_COMMENT_COUNT = 2;
-        List<Comment> actualComments = commentRepository.findCommentByBookId(EXISTING_BOOK_ID);
-        assertThat(actualComments).isNotNull().hasSize(EXPECTED_COMMENT_COUNT)
+        int expectedCommentCount = 2;
+        List<Comment> actualComments = commentRepository.findCommentByBookId(getBook().getId());
+        assertThat(actualComments).isNotNull().hasSize(expectedCommentCount)
                 .allMatch(c -> !isEmpty(c.getText()))
-                .anyMatch(c -> c.getText().equals("Comment1"))
-                .anyMatch(c -> c.getText().equals("Comment3"))
+                .anyMatch(c -> c.getText().equals("testCommentText1"))
+                .anyMatch(c -> c.getText().equals("testCommentText2"))
                 .allMatch(c -> !isEmpty(c.getBook()));
+        assertThat(queryCounter.getQueriesCount()).isEqualTo(getExpectedQueriesCount());
     }
 
 }

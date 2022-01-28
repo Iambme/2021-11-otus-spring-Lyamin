@@ -17,8 +17,8 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 import static ru.otus.lyamin.app.prototype.BookPrototype.getBook;
-import static ru.otus.lyamin.app.prototype.CommentPrototype.findAll;
 import static ru.otus.lyamin.app.prototype.CommentPrototype.getComment;
+import static ru.otus.lyamin.app.prototype.CommentPrototype.getComments;
 
 @DisplayName("Класс CommentServiceImpl должен")
 @SpringBootTest(classes = CommentServiceImpl.class)
@@ -46,9 +46,9 @@ class CommentServiceImplTest {
     @DisplayName("возвращать комментарий по id книги ")
     @Test
     void shouldReturnCommentByName() {
-        List<Comment> expectedComments = findAll();
+        List<Comment> expectedComments = getComments();
         when(commentRepository.findCommentByBookId(getBook().getId())).thenReturn(expectedComments);
-        List<Comment> actualComments = commentService.getByBookId(getBook().getId());
+        List<Comment> actualComments = commentService.findByBookId(getBook().getId());
         assertThat(actualComments).isNotNull()
                 .usingRecursiveFieldByFieldElementComparator()
                 .isEqualTo(expectedComments);
@@ -58,7 +58,7 @@ class CommentServiceImplTest {
     @DisplayName("возвращать все комментарии ")
     @Test
     void shouldReturnAllComments() {
-        List<Comment> expectedComments = findAll();
+        List<Comment> expectedComments = getComments();
         when(commentRepository.findAll()).thenReturn(expectedComments);
         List<Comment> actualComments = commentService.findAll();
         assertThat(actualComments).isNotEmpty()
@@ -71,10 +71,20 @@ class CommentServiceImplTest {
     @Test
     void shouldCorrectlyAddComment() {
         when(commentRepository.save(any(Comment.class))).thenReturn((getComment()));
-        Comment actualComment = commentService.save(getComment().getText(), getBook().getId());
+        Comment actualComment = commentService.save(getComment());
         assertThat(actualComment).usingRecursiveComparison().isEqualTo(getComment());
         verify(commentRepository, times(1)).save(any(Comment.class));
-        verify(bookService, times(1)).findById(getBook().getId());
+    }
+
+    @DisplayName("корректно обновлять комментарий ")
+    @Test
+    void shouldCorrectlyUpdateCommentTextById() {
+        Comment expectedComment = getComment();
+        expectedComment.setText("newText");
+        when(commentRepository.save(expectedComment)).thenReturn(expectedComment);
+        Comment actualComment = commentService.save(expectedComment);
+        assertThat(actualComment).isEqualTo(expectedComment);
+        verify(commentRepository, times(1)).save(expectedComment);
     }
 
     @DisplayName("корректно удалять комментарий ")

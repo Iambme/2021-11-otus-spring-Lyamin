@@ -29,7 +29,7 @@ public class BookController {
     }
 
     @GetMapping("/edit")
-    public String editPage(@RequestParam("id") String id, Model model) {
+    public String editPage(@RequestParam("id") Long id, Model model) {
         BookDto bookDto = BookDto.toDto(bookService.findById(id));
         model.addAttribute("book", bookDto);
         model.addAttribute("authors", authorService.findAll());
@@ -47,7 +47,7 @@ public class BookController {
     }
 
     @GetMapping("/delete")
-    public String deleteBook(@RequestParam("id") String id) {
+    public String deleteBook(@RequestParam("id") Long id) {
         bookService.deleteById(id);
         return "redirect:/";
     }
