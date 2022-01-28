@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Библиотека</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-2">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-header">
+                <h2>Добавить или изменить книгу в библиотеке</h2>
+            </div>
+            <form class="form-group" action="#" th:action="@{/updatebook}" th:object="${bookDto}" method="post">
+                <label hidden for="id">Номер книги</label>
+                <input hidden type="text" th:field="*{id}" id="id" class="form-control">
+
+                <label for="title">Название книги</label>
+                <input type="text" th:field="*{title}" id="title" class="form-control" required="">
+
+                <label for="authors">Автор</label>
+                <select class="form-control selectpicker" th:field="*{author}" id="authors">
+                    <option th:each="author : ${authorsList}"
+                            th:value="${author.getName()}"
+                            th:text="${author.getName()}"></option>
+                </select>
+
+                <label for="genre">Жанр</label>
+                <select class="form-control selectpicker" th:field="*{genre}" id="genre">
+                    <option th:each="genre : ${genresList}"
+                            th:value="${genre.getName()}"
+                            th:text="${genre.getName()}"></option>
+                </select>
+
+                <br>
+                <input type="submit" class="btn btn-primary" name="submit" value="Сохранить">
+                <a th:href="@{/}" class="btn btn-secondary">Отменить</a>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
