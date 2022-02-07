@@ -26,7 +26,7 @@ class AuthorControllerTest {
     @MockBean
     private AuthorService authorService;
 
-    @DisplayName("возвращать список автров")
+    @DisplayName("возвращать список авторов")
     @Test
     void shouldCorrectGetAll() throws Exception {
 

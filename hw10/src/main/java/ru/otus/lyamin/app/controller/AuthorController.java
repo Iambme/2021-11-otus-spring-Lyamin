@@ -15,7 +15,6 @@ public class AuthorController {
 
     @GetMapping("api/author")
     public List<AuthorDto> getAll() {
-        System.out.println("__________________-AYU");
         return AuthorDto.toDtoList(authorService.findAll());
     }
 }
