@@ -1,0 +1,16 @@
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: librarydb
+  main:
+    allow-circular-references: true
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.lyamin.app.changelog
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
