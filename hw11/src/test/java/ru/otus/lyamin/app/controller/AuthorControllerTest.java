@@ -1,5 +1,6 @@
 package ru.otus.lyamin.app.controller;
 
+import com.google.gson.Gson;
 import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,26 +9,22 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
-import ru.otus.lyamin.app.entity.Author;
+import ru.otus.lyamin.app.dao.AuthorRepository;
+import ru.otus.lyamin.app.dto.AuthorDto;
 
 import javax.annotation.PostConstruct;
-
-import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static ru.otus.lyamin.app.prototype.AuthorPrototype.getAuthors;
 
 
 @SpringBootTest
 @DisplayName("Контроллер для работы с авторами должен")
 class AuthorControllerTest {
 
-    @Autowired
-    private AuthorMapper authorMapper;
-
     @MockBean
-    private AuthorReactiveRepository authorReactiveRepository;
+    private AuthorRepository authorRepository;
 
     @Autowired
     private AuthorController authorController;
@@ -42,14 +39,10 @@ class AuthorControllerTest {
     @DisplayName("возвращать список авторов")
     @Test
     void shouldCorrectGetAll() {
-        val authorList = List.of(
-                new Author("id_author1", "author1"),
-                new Author("id_author2", "author2"),
-                new Author("id_author3", "author3")
-        );
+        val authorList = getAuthors();
 
-        val json = new Gson().toJson(authorList.stream().map(authorMapper::toDto).collect(Collectors.toList()));
-        given(authorReactiveRepository.findAll()).willReturn(Flux.fromIterable(authorList));
+        val json = new Gson().toJson(authorList.stream().map(AuthorDto::toDto).collect(Collectors.toList()));
+        given(authorRepository.findAll()).willReturn(Flux.fromIterable(authorList));
 
         client.get().uri("/api/author")
                 .exchange()

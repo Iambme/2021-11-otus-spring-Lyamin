@@ -2,7 +2,6 @@ package ru.otus.lyamin.app.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -21,17 +20,17 @@ public class BookController {
     private final GenreRepository genreRepository;
     private final CommentRepository commentRepository;
 
-    @GetMapping("api/book")
+    @GetMapping("/api/book")
     public Flux<BookDto> getAll() {
         return bookRepository.findAll().map(BookDto::toDto);
     }
 
-    @GetMapping("api/book/{id}")
+    @GetMapping("/api/book/{id}")
     public Mono<BookDto> getById(@PathVariable String id) {
         return bookRepository.findById(id).map(BookDto::toDto);
     }
 
-    @PostMapping("api/book")
+    @PostMapping("/api/book")
     public Mono<BookDto> create(@RequestBody BookDto bookDto) {
         return Mono.zip(authorRepository.findById(bookDto.getAuthor().getId()),
                         genreRepository.findById(bookDto.getGenre().getId()))
@@ -44,7 +43,7 @@ public class BookController {
                 .map(BookDto::toDto);
     }
 
-    @PutMapping("api/book/{id}")
+    @PutMapping("/api/book/{id}")
     public Mono<BookDto> update(@PathVariable String id, @RequestBody BookDto bookDto) {
         return Mono.zip(authorRepository.findById(bookDto.getAuthor().getId()),
                         genreRepository.findById(bookDto.getGenre().getId()),
@@ -60,20 +59,8 @@ public class BookController {
                 .map(BookDto::toDto);
     }
 
-    //    @DeleteMapping("api/book/{id}")
-//    public Mono<Void> delete(@PathVariable String id) {
-//        System.out.println("id + "+ id);
-//        return bookRepository.deleteById(id);
-//    }
-//@DeleteMapping("/books/{id}")
-//public Mono<ResponseEntity<Void>> delete(@PathVariable String id) {
-//    System.out.println("id + *********************************** "+ id);
-//    return bookRepository.deleteById(id)
-//            .map(empty -> ResponseEntity.accepted().body(empty));
-//}
-    @DeleteMapping("/books/{id}")
+    @DeleteMapping("/api/book/{id}")
     public Mono<Void> delete(@PathVariable("id") String id) {
-        System.out.println("id + *********************************** "+ id);
         return Mono.zip(commentRepository.deleteByBookId(id), bookRepository.deleteById(id))
                 .flatMap(result -> Mono.empty());
     }

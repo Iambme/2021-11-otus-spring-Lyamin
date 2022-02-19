@@ -50,7 +50,7 @@
 
     function deleteBook(id) {
         $.ajax({
-            url: '/books/' + id,
+            url: '/api/book/' + id,
             type: 'DELETE',
             success: function () {
                 location.href = '/list.html';

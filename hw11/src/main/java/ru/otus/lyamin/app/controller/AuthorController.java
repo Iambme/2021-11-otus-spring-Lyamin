@@ -12,7 +12,7 @@ import ru.otus.lyamin.app.dto.AuthorDto;
 public class AuthorController {
     private final AuthorRepository authorRepository;
 
-    @GetMapping("api/author")
+    @GetMapping("/api/author")
     public Flux<AuthorDto> getAll() {
         return authorRepository.findAll().map(AuthorDto::toDto);
     }
