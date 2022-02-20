@@ -46,7 +46,7 @@
             type: 'GET',
             success: (function (book) {
                 $('#id-input').val(book.id);
-                $('#name-input').val(book.name);
+                $('#name-input').val(book.title);
                 $.ajax({
                     url: '/api/author',
                     type: 'GET',
