@@ -15,7 +15,7 @@ import ru.otus.lyamin.app.dto.GenreDto;
 import javax.annotation.PostConstruct;
 import java.util.stream.Collectors;
 
-import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static ru.otus.lyamin.app.prototype.GenrePrototype.getGenres;
 
 @SpringBootTest
@@ -43,7 +43,7 @@ class GenreControllerTest {
         val genreList =getGenres();
 
         val json = new Gson().toJson(genreList.stream().map(GenreDto::toDto).collect(Collectors.toList()));
-        given(genreRepository.findAll()).willReturn(Flux.fromIterable(genreList));
+        when(genreRepository.findAll()).thenReturn(Flux.fromIterable(genreList));
 
         client.get().uri("/api/genre")
                 .exchange()

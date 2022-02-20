@@ -15,7 +15,7 @@ import ru.otus.lyamin.app.dto.AuthorDto;
 import javax.annotation.PostConstruct;
 import java.util.stream.Collectors;
 
-import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static ru.otus.lyamin.app.prototype.AuthorPrototype.getAuthors;
 
 
@@ -42,7 +42,7 @@ class AuthorControllerTest {
         val authorList = getAuthors();
 
         val json = new Gson().toJson(authorList.stream().map(AuthorDto::toDto).collect(Collectors.toList()));
-        given(authorRepository.findAll()).willReturn(Flux.fromIterable(authorList));
+        when(authorRepository.findAll()).thenReturn(Flux.fromIterable(authorList));
 
         client.get().uri("/api/author")
                 .exchange()

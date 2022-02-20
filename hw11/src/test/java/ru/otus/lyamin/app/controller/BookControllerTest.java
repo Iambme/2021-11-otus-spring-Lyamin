@@ -20,7 +20,7 @@ import javax.annotation.PostConstruct;
 import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static ru.otus.lyamin.app.prototype.AuthorPrototype.getAuthor;
 import static ru.otus.lyamin.app.prototype.BookPrototype.getBook;
 import static ru.otus.lyamin.app.prototype.BookPrototype.getBooks;
@@ -57,7 +57,7 @@ class BookControllerTest {
         val bookList = getBooks();
 
         val json = new Gson().toJson(bookList.stream().map(BookDto::toDto).collect(Collectors.toList()));
-        given(bookRepository.findAll()).willReturn(Flux.fromIterable(bookList));
+        when(bookRepository.findAll()).thenReturn(Flux.fromIterable(bookList));
 
         client.get().uri("/api/book")
                 .exchange()
@@ -71,7 +71,7 @@ class BookControllerTest {
         val book = getBook();
 
         val json = new Gson().toJson(BookDto.toDto(book));
-        given(bookRepository.findById(book.getId())).willReturn(Mono.just(book));
+        when(bookRepository.findById(book.getId())).thenReturn(Mono.just(book));
 
         client.get().uri("/api/book/" + book.getId())
                 .exchange()
@@ -88,9 +88,9 @@ class BookControllerTest {
 
         val json = new Gson().toJson(BookDto.toDto(book));
 
-        given(authorRepository.findById(author.getId())).willReturn(Mono.just(author));
-        given(genreRepository.findById(genre.getId())).willReturn(Mono.just(genre));
-        given(bookRepository.save(any(Book.class))).willReturn(Mono.just(book));
+        when(authorRepository.findById(author.getId())).thenReturn(Mono.just(author));
+        when(genreRepository.findById(genre.getId())).thenReturn(Mono.just(genre));
+        when(bookRepository.save(any(Book.class))).thenReturn(Mono.just(book));
 
         client.post().uri("/api/book/")
                 .bodyValue(BookDto.toDto(book))
@@ -108,10 +108,10 @@ class BookControllerTest {
 
         val json = new Gson().toJson(BookDto.toDto(book));
 
-        given(authorRepository.findById(author.getId())).willReturn(Mono.just(author));
-        given(genreRepository.findById(genre.getId())).willReturn(Mono.just(genre));
-        given(bookRepository.findById(book.getId())).willReturn(Mono.just(book));
-        given(bookRepository.save(any(Book.class))).willReturn(Mono.just(book));
+        when(authorRepository.findById(author.getId())).thenReturn(Mono.just(author));
+        when(genreRepository.findById(genre.getId())).thenReturn(Mono.just(genre));
+        when(bookRepository.findById(book.getId())).thenReturn(Mono.just(book));
+        when(bookRepository.save(any(Book.class))).thenReturn(Mono.just(book));
 
         client.put().uri("/api/book/" + book.getId())
                 .bodyValue(BookDto.toDto(book))
@@ -125,7 +125,7 @@ class BookControllerTest {
     void shouldCorrectDelete() {
         val deleteBookId = getBook().getId();
 
-        given(bookRepository.deleteById(deleteBookId)).willReturn(Mono.empty());
+        when(bookRepository.deleteById(deleteBookId)).thenReturn(Mono.empty());
 
         client.delete().uri("/api/book/" + deleteBookId)
                 .exchange()
