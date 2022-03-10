@@ -1,0 +1,41 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="02" author="plyamin">
+
+        <insert tableName="author">
+            <column name="name" value="Stephen King"/>
+        </insert>
+        <insert tableName="author">
+            <column name="name" value="Agatha Сhristie"/>
+        </insert>
+        <insert tableName="genre">
+            <column name="name" value="Horror"/>
+        </insert>
+        <insert tableName="genre">
+            <column name="name" value="Detective"/>
+        </insert>
+        <insert tableName="book">
+            <column name="title" value="It"/>
+            <column name="author_id" value="1"/>
+            <column name="genre_id" value="1"/>
+        </insert>
+        <insert tableName="book">
+            <column name="title" value="Ten Little Niggers"/>
+            <column name="author_id" value="2"/>
+            <column name="genre_id" value="2"/>
+        </insert>
+        <insert tableName="comment">
+            <column name="text" value="so cool"/>
+            <column name="book_id" value="1"/>
+        </insert>
+        <insert tableName="user">
+            <column name="name" value="admin"/>
+            <column name="password" value="password"/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>
