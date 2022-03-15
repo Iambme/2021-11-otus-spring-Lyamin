@@ -21,7 +21,6 @@ public class BookDto {
 
 
     public static BookDto toDto(Book book) {
-        System.out.println(book.toString());
         return new BookDto(book.getId(), book.getTitle(), book.getAuthor(), book.getGenre());
     }
 

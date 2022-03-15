@@ -7,13 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.lyamin.app.service.interf.AuthorService;
 import ru.otus.lyamin.app.service.interf.BookService;
 import ru.otus.lyamin.app.service.interf.GenreService;
 
+import javax.annotation.PostConstruct;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,9 +39,27 @@ class BookControllerTest {
     private AuthorService authorService;
     @MockBean
     private GenreService genreService;
+    @MockBean(name = "userDetailsService")
+    private UserDetailsService userDetailsService;
+
+    @PostConstruct
+    void setUp() {
+        String username = "test_user";
+        String password = "test_password";
+        String role = "TEST";
+        UserDetails userDetails = User.withUsername(username)
+                .password(password)
+                .roles(role)
+                .build();
+        when(userDetailsService.loadUserByUsername(username)).thenReturn(userDetails);
+    }
+
+
+
 
     @DisplayName("возвращать список книг")
     @Test
+    @WithUserDetails(value = "test_user", userDetailsServiceBeanName = "userDetailsService")
     void shouldCorrectGetAll() throws Exception {
 
         String json = new Gson().toJson(getBooks());
@@ -48,6 +73,7 @@ class BookControllerTest {
 
     @DisplayName("возвращать книгу")
     @Test
+    @WithUserDetails(value = "test_user", userDetailsServiceBeanName = "userDetailsService")
     void shouldCorrectGetById() throws Exception {
         String json = new Gson().toJson(getBook());
         given(bookService.findById(1L)).willReturn(getBook());
@@ -60,6 +86,7 @@ class BookControllerTest {
 
     @DisplayName("создавать книгу")
     @Test
+    @WithUserDetails(value = "test_user", userDetailsServiceBeanName = "userDetailsService")
     void shouldCorrectSave() throws Exception {
 
         String json = new Gson().toJson(getBook());
@@ -75,6 +102,7 @@ class BookControllerTest {
 
     @DisplayName("обновлять книгу")
     @Test
+    @WithUserDetails(value = "test_user", userDetailsServiceBeanName = "userDetailsService")
     void shouldCorrectUpdate() throws Exception {
 
         String json = new Gson().toJson(getBook());
@@ -90,6 +118,7 @@ class BookControllerTest {
 
     @DisplayName("удалять книгу")
     @Test
+    @WithUserDetails(value = "test_user", userDetailsServiceBeanName = "userDetailsService")
     void shouldCorrectDelete() throws Exception {
         mockMvc.perform(delete("/api/book/1"))
                 .andExpect(status().isOk());
