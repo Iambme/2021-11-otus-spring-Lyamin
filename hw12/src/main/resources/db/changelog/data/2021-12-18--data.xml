@@ -33,7 +33,7 @@
         </insert>
         <insert tableName="user">
             <column name="name" value="admin"/>
-            <column name="password" value="password"/>
+            <column name="password" value="$2a$12$hrethD8fVPpjrIhFJpmiEOC574FcbrFlfX0VloAUiCN8ug7ke7InG"/>
         </insert>
 
     </changeSet>
