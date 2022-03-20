@@ -3,6 +3,8 @@ package ru.otus.lyamin.app.controller;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,6 +25,7 @@ import static ru.otus.lyamin.app.prototype.BookPrototype.getBook;
 import static ru.otus.lyamin.app.prototype.BookPrototype.getBooks;
 
 @DisplayName("Контроллер для работы с книгами должен")
+
 @WebMvcTest(BookController.class)
 class BookControllerTest {
     @Autowired
@@ -36,7 +39,6 @@ class BookControllerTest {
     private GenreService genreService;
     @MockBean
     private UserDetailsService userDetailsService;
-
 
     @DisplayName("возвращать список книг")
     @Test
@@ -52,13 +54,6 @@ class BookControllerTest {
                 .andExpect(content().json(json));
     }
 
-    @DisplayName("для неавторизованного пользователя возвращать ответ 302 (REDIRECTION) при получении книг")
-    @Test
-    void GetAllNonAuthorized() throws Exception {
-        mockMvc.perform(get("/api/book"))
-                .andExpect(status().isFound());
-    }
-
     @DisplayName("возвращать книгу")
     @Test
     @WithMockUser
@@ -70,13 +65,6 @@ class BookControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(json));
-    }
-
-    @DisplayName("для неавторизованного пользователя возвращать ответ 302 (REDIRECTION) при получении книги")
-    @Test
-    void GetByIdNonAuthorized() throws Exception {
-        mockMvc.perform(get("/api/book/1"))
-                .andExpect(status().isFound());
     }
 
     @DisplayName("создавать книгу")
@@ -95,13 +83,6 @@ class BookControllerTest {
                 .andExpect(content().json(json));
     }
 
-    @DisplayName("для неавторизованного пользователя возвращать ответ 302 (REDIRECTION) при сохранении книги")
-    @Test
-    void saveNonAuthorized() throws Exception {
-        mockMvc.perform(post("/api/book"))
-                .andExpect(status().isFound());
-    }
-
     @DisplayName("обновлять книгу")
     @Test
     @WithMockUser
@@ -118,13 +99,6 @@ class BookControllerTest {
                 .andExpect(content().json(json));
     }
 
-    @DisplayName("для неавторизованного пользователя возвращать ответ 302 (REDIRECTION) при обновлении книги")
-    @Test
-    void updateNonAuthorized() throws Exception {
-        mockMvc.perform(put("/api/book/1"))
-                .andExpect(status().isFound());
-    }
-
     @DisplayName("удалять книгу")
     @Test
     @WithMockUser
@@ -133,10 +107,19 @@ class BookControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @DisplayName("для неавторизованного пользователя возвращать ответ 302 (REDIRECTION) при удалении книги")
-    @Test
-    void deleteNonAuthorized() throws Exception {
-        mockMvc.perform(delete("/api/book/1"))
+    @DisplayName("для неавторизованного пользователя возвращать ответ 302 при get запросе")
+    @ParameterizedTest()
+    @ValueSource(strings = {"/api/book", "/api/book/1"})
+    void getAllNonAuthorized(String url) throws Exception {
+        mockMvc.perform(get(url))
+                .andExpect(status().isFound());
+    }
+
+    @DisplayName("для неавторизованного пользователя возвращать ответ 302 при post запросе")
+    @ParameterizedTest()
+    @ValueSource(strings = {"/api/book", "/api/book/1"})
+    void postNonAuthorized(String url) throws Exception {
+        mockMvc.perform(post(url))
                 .andExpect(status().isFound());
     }
 }
