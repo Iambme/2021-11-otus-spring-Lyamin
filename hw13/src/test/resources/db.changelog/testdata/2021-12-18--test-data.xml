@@ -1,0 +1,50 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="01" author="plyamin">
+
+        <insert tableName="author">
+            <column name="name" value="testAuthorFirstname1"/>
+        </insert>
+        <insert tableName="author">
+            <column name="name" value="testAuthorFirstname2"/>
+        </insert>
+        <insert tableName="author">
+            <column name="name" value="testAuthorForDelete"/>
+        </insert>
+        <insert tableName="genre">
+            <column name="name" value="testGenreName1"/>
+        </insert>
+        <insert tableName="genre">
+            <column name="name" value="testGenreName2"/>
+        </insert>
+        <insert tableName="genre">
+            <column name="name" value="testGenreForDelete"/>
+        </insert>
+        <insert tableName="book">
+            <column name = "title" value="testBookTitle1"/>
+            <column name = "author_id" value = "1"/>
+            <column name = "genre_id" value = "1"/>
+        </insert>
+        <insert tableName="book">
+            <column name = "title" value="testBookTitle2"/>
+            <column name = "author_id" value = "2"/>
+            <column name = "genre_id" value = "2"/>
+        </insert>
+        <insert tableName="comment">
+            <column name="text" value="testCommentText1"/>
+            <column name="book_id" value="1"/>
+        </insert>
+        <insert tableName="comment">
+            <column name="text" value="testCommentText2"/>
+            <column name="book_id" value="1"/>
+        </insert>
+        <insert tableName="comment">
+            <column name="text" value="testCommentTextForDelete"/>
+            <column name="book_id" value="2"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
