@@ -1,0 +1,12 @@
+###
+GET http://localhost:8080/actuator
+
+###
+GET http://localhost:8080/actuator/logfile
+
+###
+GET http://localhost:8080/actuator/health/custom
+
+###
+GET http://localhost:8080/actuator/metrics/application.started.time
+
